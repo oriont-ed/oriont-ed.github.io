@@ -5,6 +5,5 @@ node_modules/
 my_secret_folder/
 
 # Ignore a specific folder only at the root level
-/top_level_only_folder/js/ 
 style.css 
 js/ 
