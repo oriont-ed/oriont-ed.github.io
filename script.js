@@ -837,123 +837,187 @@ function renderGrid() {
     }
   }
 
+  // PayPal SDK dynamic loading candidates (covering all visual ambiguities: fIHp/flHp, yl2/yI2/yi2)
+  const clientIdsToTry = [
+    "Af1bV1-fIHpB70yOyDR_oD59ucbhBIVCzWbVGhAd_s5G9yl2WG5L8rj4Ne4va3xJ7duddaWxEhC--Mlz",
+    "Af1bV1-flHpB70yOyDR_oD59ucbhBIVCzWbVGhAd_s5G9yl2WG5L8rj4Ne4va3xJ7duddaWxEhC--Mlz",
+    "Af1bV1-fIHpB70yOyDR_oD59ucbhBIVCzWbVGhAd_s5G9yI2WG5L8rj4Ne4va3xJ7duddaWxEhC--Mlz",
+    "Af1bV1-flHpB70yOyDR_oD59ucbhBIVCzWbVGhAd_s5G9yI2WG5L8rj4Ne4va3xJ7duddaWxEhC--Mlz",
+    "Af1bV1-fIHpB70yOyDR_oD59ucbhBIVCzWbVGhAd_s5G9yi2WG5L8rj4Ne4va3xJ7duddaWxEhC--Mlz",
+    "Af1bV1-flHpB70yOyDR_oD59ucbhBIVCzWbVGhAd_s5G9yi2WG5L8rj4Ne4va3xJ7duddaWxEhC--Mlz",
+    "sb"
+  ];
+  let currentClientIdIndex = 0;
+
+  function loadPaypalScript(callback) {
+    if (window.paypal) {
+      callback();
+      return;
+    }
+    
+    if (currentClientIdIndex >= clientIdsToTry.length) {
+      const lang = getCurrentLang();
+      formStatus.textContent = lang === 'lv' ? "Kļūda: Neizdevās ielādēt PayPal maksājumu sistēmu." : "Error: PayPal SDK failed to load. Please try again later.";
+      formStatus.className = "error";
+      if (paypalContainer) paypalContainer.style.display = "none";
+      submitBtn.style.display = "block";
+      submitBtn.disabled = false;
+      enableFormInputs();
+      return;
+    }
+
+    const clientId = clientIdsToTry[currentClientIdIndex];
+    console.log(`Loading PayPal SDK with client ID: ${clientId}...`);
+    
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=EUR`;
+    
+    let timeoutId = setTimeout(() => {
+      console.warn(`PayPal SDK load timeout for client ID: ${clientId}`);
+      cleanupAndTryNext();
+    }, 6000);
+
+    function cleanupAndTryNext() {
+      clearTimeout(timeoutId);
+      script.onload = null;
+      script.onerror = null;
+      if (script.parentNode) {
+        script.remove();
+      }
+      currentClientIdIndex++;
+      loadPaypalScript(callback);
+    }
+
+    script.onload = () => {
+      clearTimeout(timeoutId);
+      console.log(`PayPal SDK loaded successfully with client ID: ${clientId}`);
+      callback();
+    };
+    
+    script.onerror = () => {
+      console.warn(`PayPal SDK failed to load with client ID: ${clientId}. Trying next candidate...`);
+      cleanupAndTryNext();
+    };
+    
+    document.head.appendChild(script);
+  }
+
   // PayPal Buttons Integration (Render on validation to avoid iframe size issues)
   const paypalContainer = document.getElementById("paypal-button-container");
   function renderPaypalButtons() {
     if (paypalButtonsRendered) return;
-    if (!window.paypal) {
-      console.error("PayPal JS SDK not loaded yet.");
-      return;
-    }
-    window.paypal.Buttons({
-      createOrder: function(data, actions) {
-        let total = 0;
-        if (selectedItems['banner']) total += selectedItems['banner'] * designLibrary['banner'].price;
-        if (selectedItems['wallpaper']) total += selectedItems['wallpaper'] * designLibrary['wallpaper'].price;
-        
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              currency_code: 'EUR',
-              value: total.toFixed(2)
-            },
-            description: 'WDESIGN WoW Graphics Request'
-          }]
-        });
-      },
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(async function(details) {
-          const lang = getCurrentLang();
-          formStatus.textContent = translations[lang].formSubmitting;
-          formStatus.className = "info";
-
-          const formData = new FormData(form);
-          const baseData = Object.fromEntries(formData.entries());
-
-          const orderSummary = Object.keys(selectedItems).map(key => ({
-            productKey: key,
-            name: designLibrary[key].name,
-            quantity: selectedItems[key],
-            specs: designLibrary[key].res,
-            price: designLibrary[key].price
-          }));
-
-          const hasWowItem = selectedItems['banner'] || selectedItems['wallpaper'];
-          const characterDetails = hasWowItem ? {
-            class: document.getElementById("selected-class")?.value || "",
-            race: document.getElementById("selected-race")?.value || "",
-            gender: document.getElementById("selected-gender")?.value || "Male",
-            tier_season: document.getElementById("wow-gear-set")?.value || "",
-            gear_mode: document.getElementById("selected-gear-mode")?.value || "full",
-            gear_head: form.querySelector("[name='gear_head']")?.value || "",
-            gear_shoulders: form.querySelector("[name='gear_shoulders']")?.value || "",
-            gear_chest: form.querySelector("[name='gear_chest']")?.value || "",
-            gear_hands: form.querySelector("[name='gear_hands']")?.value || "",
-            gear_legs: form.querySelector("[name='gear_legs']")?.value || "",
-            gear_weapon: form.querySelector("[name='gear_weapon']")?.value || "",
-            gear_offhand: form.querySelector("[name='gear_offhand']")?.value || ""
-          } : null;
-
-          const requestData = {
-            email: baseData.email,
-            budget: Number(budgetInput.value) || 0,
-            instructions: baseData.instructions,
-            orderSummary: orderSummary,
-            characterDetails: characterDetails,
-            specificDetails: {},
-            agreements: {
-              terms: !!baseData.agreeTerms,
-              showcase: !!baseData.agreeShowcase,
-              marketing: !!baseData.agreeEmail
-            },
-            paymentDetails: {
-              orderId: details.id,
-              transactionId: details.purchase_units[0].payments.captures[0].id,
-              payerEmail: details.payer.email_address,
-              status: details.status,
-              amount: details.purchase_units[0].amount.value
-            },
-            language: lang,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            status: "pending"
-          };
-
-          try {
-            await db.collection("requests").add(requestData);
-
-            // Webhook Endpoint Configuration
-            const webhookUrl = "YOUR_WEBHOOK_URL_HERE";
-            await triggerWebhook(webhookUrl, requestData);
-
-            formStatus.textContent = translations[lang].formSuccess;
-            formStatus.className = "success";
-
-            form.reset();
-            enableFormInputs();
-            resetWowSelectionUI();
-            
-            selectedItems = {};
-            renderGrid();
-            
-            if (paypalContainer) paypalContainer.style.display = "none";
-            submitBtn.style.display = "block";
-            submitBtn.disabled = false;
-
-          } catch (err) {
-            console.error("Submission error:", err);
-            formStatus.textContent = translations[lang].formError;
-            formStatus.className = "error";
-            enableFormInputs();
-          }
-        });
-      },
-      onError: function(err) {
-        console.error("PayPal Error:", err);
-        const lang = getCurrentLang();
-        formStatus.textContent = lang === 'lv' ? "Maksājums neizdevās. Lūdzu, mēģiniet vēlreiz." : "Payment failed. Please try again.";
-        formStatus.className = "error";
-        enableFormInputs();
+    
+    loadPaypalScript(() => {
+      if (!window.paypal) {
+        console.error("PayPal SDK not loaded properly.");
+        return;
       }
+      
+      window.paypal.Buttons({
+        createOrder: function(data, actions) {
+          let total = 0;
+          if (selectedItems['banner']) total += selectedItems['banner'] * designLibrary['banner'].price;
+          if (selectedItems['wallpaper']) total += selectedItems['wallpaper'] * designLibrary['wallpaper'].price;
+          
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                currency_code: 'EUR',
+                value: total.toFixed(2)
+              },
+              description: 'WDESIGN WoW Graphics Request'
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(async function(details) {
+            const lang = getCurrentLang();
+            formStatus.textContent = translations[lang].formSubmitting;
+            formStatus.className = "info";
+
+            const formData = new FormData(form);
+            const baseData = Object.fromEntries(formData.entries());
+
+            const orderSummary = Object.keys(selectedItems).map(key => ({
+              productKey: key,
+              name: designLibrary[key].name,
+              quantity: selectedItems[key],
+              specs: designLibrary[key].res,
+              price: designLibrary[key].price
+            }));
+
+            const hasWowItem = selectedItems['banner'] || selectedItems['wallpaper'];
+            const characterDetails = hasWowItem ? {
+              class: document.getElementById("selected-class")?.value || "",
+              race: document.getElementById("selected-race")?.value || "",
+              gender: document.getElementById("selected-gender")?.value || "Male",
+              tier_season: document.getElementById("wow-gear-set")?.value || "",
+              gear_mode: document.getElementById("selected-gear-mode")?.value || "full",
+              gear_head: form.querySelector("[name='gear_head']")?.value || "",
+              gear_shoulders: form.querySelector("[name='gear_shoulders']")?.value || "",
+              gear_chest: form.querySelector("[name='gear_chest']")?.value || "",
+              gear_hands: form.querySelector("[name='gear_hands']")?.value || "",
+              gear_legs: form.querySelector("[name='gear_legs']")?.value || "",
+              gear_weapon: form.querySelector("[name='gear_weapon']")?.value || "",
+              gear_offhand: form.querySelector("[name='gear_offhand']")?.value || ""
+            } : null;
+
+            const requestData = {
+              email: baseData.email,
+              budget: Number(budgetInput.value) || 0,
+              instructions: baseData.instructions,
+              orderSummary: orderSummary,
+              characterDetails: characterDetails,
+              specificDetails: {},
+              agreements: {
+                terms: !!baseData.agreeTerms,
+                showcase: !!baseData.agreeShowcase,
+                marketing: !!baseData.agreeEmail
+              },
+              paymentDetails: {
+                orderId: details.id,
+                transactionId: details.purchase_units[0].payments.captures[0].id,
+                payerEmail: details.payer.email_address,
+                status: details.status,
+                amount: details.purchase_units[0].amount.value
+              },
+              language: lang,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+              status: "pending"
+            };
+
+            try {
+              await db.collection("requests").add(requestData);
+
+              // Webhook Endpoint Configuration
+              const webhookUrl = "YOUR_WEBHOOK_URL_HERE";
+              await triggerWebhook(webhookUrl, requestData);
+
+              formStatus.textContent = translations[lang].formSuccess;
+              formStatus.className = "success";
+
+              form.reset();
+              enableFormInputs();
+              resetWowSelectionUI();
+              
+              selectedItems = {};
+              renderGrid();
+              
+              if (paypalContainer) paypalContainer.style.display = "none";
+              submitBtn.style.display = "block";
+              submitBtn.disabled = false;
+
+            } catch (err) {
+              console.error("Submission error:", err);
+              formStatus.textContent = translations[lang].formError;
+              formStatus.className = "error";
+              enableFormInputs();
+            }
+          });
+        },
+        onError: function(err) {
+          console.error("PayPal Error:", err);
+          const lang = getCurrentLang();
     }).render("#paypal-button-container");
 
     paypalButtonsRendered = true;
