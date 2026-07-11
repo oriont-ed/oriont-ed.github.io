@@ -167,13 +167,21 @@ document.addEventListener("DOMContentLoaded", () => {
             if (cd.gear_offhand) details += `- Off Hand/Shield: ${cd.gear_offhand}\n`;
           }
         }
+        if (req.paymentDetails) {
+          const pd = req.paymentDetails;
+          details += `\n[Payment Details]\n`;
+          details += `Paid: ${pd.amount} EUR\n`;
+          details += `Payer: ${pd.payerEmail}\n`;
+          details += `Txn ID: ${pd.transactionId}\n`;
+          details += `Order ID: ${pd.orderId}\n`;
+        }
         
         // FIX: Changed <pre> to <div> to allow CSS word-wrapping
         tr.innerHTML = `
           <td>${date}</td>
           <td>${req.email}</td>
-          <td>${req.product_type}</td>
-          <td>${req.budget} Eur</td>
+          <td>${req.product_type || (req.orderSummary ? req.orderSummary.map(i => `${i.name} (${i.quantity}x)`).join(', ') : 'N/A')}</td>
+          <td>${req.budget} EUR</td>
           <td>
             <select class="status-select" data-id="${doc.id}">
               <option value="pending" ${req.status === 'pending' ? 'selected' : ''}>Pending</option>
@@ -181,8 +189,8 @@ document.addEventListener("DOMContentLoaded", () => {
               <option value="declined" ${req.status === 'declined' ? 'selected' : ''}>Declined</option>
             </select>
           </td>
-          <td>${req.showcase ? 'Yes' : 'No'}</td>
-          <td>${req.email_agree ? 'Yes' : 'No'}</td>
+          <td>${req.showcase !== undefined ? (req.showcase ? 'Yes' : 'No') : (req.agreements && req.agreements.showcase ? 'Yes' : 'No')}</td>
+          <td>${req.email_agree !== undefined ? (req.email_agree ? 'Yes' : 'No') : (req.agreements && req.agreements.marketing ? 'Yes' : 'No')}</td>
           <td><div class="request-details">${details}</div></td>
           <td>
             <button class="btn-action btn-approve" data-id="${doc.id}">Approve</button>
@@ -257,16 +265,24 @@ document.addEventListener("DOMContentLoaded", () => {
             if (cd.gear_offhand) details += `- Off Hand/Shield: ${cd.gear_offhand}\n`;
           }
         }
+        if (req.paymentDetails) {
+          const pd = req.paymentDetails;
+          details += `\n[Payment Details]\n`;
+          details += `Paid: ${pd.amount} EUR\n`;
+          details += `Payer: ${pd.payerEmail}\n`;
+          details += `Txn ID: ${pd.transactionId}\n`;
+          details += `Order ID: ${pd.orderId}\n`;
+        }
         
         // FIX: Changed <pre> to <div>
         tr.innerHTML = `
           <td>${date}</td>
           <td>${req.email}</td>
-          <td>${req.product_type}</td>
-          <td>${req.budget} Eur</td>
+          <td>${req.product_type || (req.orderSummary ? req.orderSummary.map(i => `${i.name} (${i.quantity}x)`).join(', ') : 'N/A')}</td>
+          <td>${req.budget} EUR</td>
           <td>${req.status}</td>
-          <td>${req.showcase ? 'Yes' : 'No'}</td>
-          <td>${req.email_agree ? 'Yes' : 'No'}</td>
+          <td>${req.showcase !== undefined ? (req.showcase ? 'Yes' : 'No') : (req.agreements && req.agreements.showcase ? 'Yes' : 'No')}</td>
+          <td>${req.email_agree !== undefined ? (req.email_agree ? 'Yes' : 'No') : (req.agreements && req.agreements.marketing ? 'Yes' : 'No')}</td>
           <td><div class="request-details">${details}</div></td>
         `;
         completedRequestList.appendChild(tr);

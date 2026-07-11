@@ -1,3 +1,9 @@
+// --- CONFIGURATION ---
+const CONFIG = {
+  // Replace this with your Discord/Slack webhook URL to receive order notifications!
+  WEBHOOK_URL: "YOUR_WEBHOOK_URL_HERE"
+};
+
 // --- 1. Translation Setup ---
   const translations = {
     en: {
@@ -919,6 +925,11 @@ function renderGrid() {
           if (selectedItems['banner']) total += selectedItems['banner'] * designLibrary['banner'].price;
           if (selectedItems['wallpaper']) total += selectedItems['wallpaper'] * designLibrary['wallpaper'].price;
           
+          if (total <= 0) {
+            console.error("Order total must be greater than zero.");
+            return;
+          }
+
           return actions.order.create({
             purchase_units: [{
               amount: {
@@ -989,12 +1000,15 @@ function renderGrid() {
             try {
               await db.collection("requests").add(requestData);
 
-              // Webhook Endpoint Configuration
-              const webhookUrl = "YOUR_WEBHOOK_URL_HERE";
+              // Webhook Endpoint Configuration from CONFIG
+              const webhookUrl = CONFIG.WEBHOOK_URL;
               await triggerWebhook(webhookUrl, requestData);
 
               formStatus.textContent = translations[lang].formSuccess;
               formStatus.className = "success";
+
+              // Smooth scroll to success message
+              formStatus.scrollIntoView({ behavior: "smooth", block: "center" });
 
               form.reset();
               enableFormInputs();
@@ -1015,12 +1029,32 @@ function renderGrid() {
             }
           });
         },
+        onCancel: function(data) {
+          console.log("PayPal payment cancelled by user.");
+          const lang = getCurrentLang();
+          formStatus.textContent = lang === 'lv' ? "Maksājums atcelts. Varat veikt izmaiņas un mēģināt vēlreiz." : "Payment cancelled. You can modify your request and try again.";
+          formStatus.className = "info";
+          
+          if (paypalContainer) paypalContainer.style.display = "none";
+          submitBtn.style.display = "block";
+          submitBtn.disabled = false;
+          enableFormInputs();
+        },
         onError: function(err) {
           console.error("PayPal Error:", err);
           const lang = getCurrentLang();
-    }).render("#paypal-button-container");
+          formStatus.textContent = lang === 'lv' ? "Maksājums neizdevās. Lūdzu, mēģiniet vēlreiz." : "Payment failed. Please try again.";
+          formStatus.className = "error";
+          
+          if (paypalContainer) paypalContainer.style.display = "none";
+          submitBtn.style.display = "block";
+          submitBtn.disabled = false;
+          enableFormInputs();
+        }
+      }).render("#paypal-button-container");
 
-    paypalButtonsRendered = true;
+      paypalButtonsRendered = true;
+    });
   }
 
   form.addEventListener("submit", async e => {
