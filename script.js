@@ -25,28 +25,16 @@
       priceHeaderRes: "Technical Resolution (In MM)",
       notpredefined: "Not Predefined size",
       // UPDATED PRICES/PRODUCTS
-      priceLogo: "Logo",
-      priceA3: "A3 Poster",
-      priceA4: "A4 Poster",
-      priceBanner: "Banner",
-      priceCover: "Cover",
-      priceFlyer: "Flyer",
-      priceBrandCard: "Brand Card",
-      priceBanner: "Banner",
-      priceProfile: "Profile Image",
+      priceBanner: "World of Warcraft Banner",
+      priceWallpaper: "World of Warcraft Wallpaper / Character Background",
       homeDonateTitle: "Support My Work",
       homeDonateText: "“Buy me a coffee ☕🎨”",
       homeDonateButton: "Donate with PayPal",
       // Portfolio Page
       portfolioTitle: "Portfolio",
       filterAll: "All",
-      filterLogos: "Logos",
-      filterPosters: "Posters",
-      filterFlyer: "Flyers",
-      filterCover: "Covers",
-      filterBrandCard: "Brand Cards",
       filterBanners: "Banners",
-      filterProfile: "Profile",
+      filterWallpapers: "Wallpapers",
       // NEW: GFX Page
       gfxTitle: "GFX",
       gfxIntro: "Here you can find various digital hand wrapped design assets and resources I've created over time. Tech tip: use it as Screen filter to make it transperent as background so the GFX image works indeed.",
@@ -99,12 +87,8 @@
       formEmailPlaceholder: "your.email@example.com",
       formProduct: "Select Product Type",
       // UPDATED OPTIONS
-      formOptionProfile: "Profile (5 Eur)",
-      formOptionBanner: "Banner (10 Eur)",
-      formOptionPoster: "A3 Promo Poster (15 Eur)",
-      formOptionLogo: "Logo (35 Eur)",
-      formOptionUI: "Social focused layout [Logo/Profile/Banner] (50 Eur)",
-      formOptionBundle: "Promo Bundle [Logo/Profile/Banner] (75 Eur)",
+      formOptionBanner: "WoW Banner (15 Eur)",
+      formOptionWallpaper: "WoW Wallpaper (25 Eur)",
       formBudget: "Your Budget (EUR)",
       formLogoDetails: "Logo Details",
       formLogoPlaceholder1: "Brand Name",
@@ -143,7 +127,28 @@
       latestWorkError: "<p>Error loading latest work.</p>",
       formSubmitting: "Submitting...",
       formSuccess: "Veiksmīgi! Pēc apstiprināšanas jūs saņemsiet paziņojumu uz norādīto e-pasta adresi.",
-      formError: "An error occurred. Please try again or contact us directly through contact e-mail whazorz.design@gmail.com"
+      formError: "An error occurred. Please try again or contact us directly through contact e-mail whazorz.design@gmail.com",
+      wowCustomizerTitle: "Character Customizer",
+      wowChooseClass: "Choose Class",
+      wowChooseRace: "Choose Race",
+      wowGender: "Character Gender",
+      wowGearSet: "PvE Tier / PvP Season Gear",
+      wowGearCustomization: "Gear Customization",
+      wowAlliance: "Alliance",
+      wowHorde: "Horde",
+      wowMale: "Male",
+      wowFemale: "Female",
+      wowFullSet: "Full Matching Set",
+      wowCustomGear: "Custom Gear List",
+      wowHeadSlot: "Head Slot",
+      wowShoulderSlot: "Shoulder Slot",
+      wowChestSlot: "Chest Slot",
+      wowHandsSlot: "Gloves Slot",
+      wowLegsSlot: "Legs Slot",
+      wowWeaponSlot: "Main Hand Weapon",
+      wowOffhandSlot: "Off Hand / Shield",
+      wowPvPSeasons: "PvP Arena Seasons",
+      wowPvETiers: "PvE Tiers"
     },
     lv: {
       // Nav
@@ -170,27 +175,16 @@
       priceHeaderRes: "Tehniskās Rezolūcijas (Iekš MM)",
       notpredefined: "Nav definēts izmērs.",
       // UPDATED PRICES/PRODUCTS
-      priceLogo: "Logo",
-      priceA3: "A3 Posteris",
-      priceA4: "A4 Posteris",
-      priceBanner: "Banneris",
-      priceCover: "Kovers",
-      priceFlyer: "Flajers",
-      priceBrandCard: "Uzņēmuma Karte",
-      priceProfile: "Profil Bilde",
+      priceBanner: "World of Warcraft Banneris",
+      priceWallpaper: "World of Warcraft Fona Attēls / Varonis",
       homeDonateTitle: "Atbalsti manu darbu",
       homeDonateText: "“Uzsauc man kafiju ☕🎨”",
       homeDonateButton: "Ziedot ar PayPal",
       // Portfolio Page
       portfolioTitle: "Portfolio",
       filterAll: "Visi",
-      filterLogos: "Logo",
-      filterPosters: "Posters",
-      filterFlyer: "Flajeri",
-      filterCover: "Kovers",
-      filterBrandCard: "Uzņēmuma Kartes",
       filterBanners: "Banneri",
-      filterProfile: "Profila Bildes",
+      filterWallpapers: "Fona attēli",
       // NEW: GFX Page
       gfxTitle: "GFX",
       gfxIntro: "Šeit varat atrast dažādus digitālus, ar rokām veidotus dizaina elementus un resursus, kurus esmu izstrādājis laika gaitā. Tehnisks padoms: izmantojiet Screen sapludināšanas režīmu, lai padarītu to caurspīdīgu kā fonu, tādējādi GFX attēls darbosies korekti.",
@@ -239,12 +233,8 @@
       formEmailPlaceholder: "jusu.epasts@piemers.com",
       formProduct: "Izvēlieties produkta veidu",
       // UPDATED OPTIONS
-      formOptionProfile: "Profils ( 15 Eur)",
-      formOptionBanner: "Baneris(20 Eur)",
-      formOptionPoster: "A4 Promo Plakāts (25 Eur)",
-      formOptionLogo: "Logo (60 Eur)",
-      formOptionUI: "Uz zīmolu orientēts UI izkārtojums [Logo/Profils/UI] (90 Eur)",
-      formOptionBundle: "Promo komplekts [Logo/Profils/Baneris] (75 Eur)",
+      formOptionBanner: "WoW Banneris (15 Eur)",
+      formOptionWallpaper: "WoW Fona Attēls (25 Eur)",
       formBudget: "Tavs Budžets (EUR)",
       formLogoDetails: "Logo detaļas",
       formLogoPlaceholder1: "Zīmola nosaukums",
@@ -281,7 +271,28 @@
       latestWorkError: "<p>Kļūda, ielādējot jaunākos darbus.</p>",
       formSubmitting: "Iesniedz...",
       formSuccess: "Veiksmīgi! ",
-      formError: "Radās kļūda. Lūdzu, mēģiniet vēlreiz vai sazinieties ar mums tieši, rakstot uz kontaktpersonas e-pastu whazorz.design@gmail.com."
+      formError: "Radās kļūda. Lūdzu, mēģiniet vēlreiz vai sazinieties ar mums tieši, rakstot uz kontaktpersonas e-pastu whazorz.design@gmail.com.",
+      wowCustomizerTitle: "Tēla Pielāgotājs",
+      wowChooseClass: "Izvēlēties Klasi",
+      wowChooseRace: "Izvēlēties Rasi",
+      wowGender: "Tēla Dzimums",
+      wowGearSet: "PvE Tier / PvP Sezonas Ekipējums",
+      wowGearCustomization: "Ekipējuma Pielāgošana",
+      wowAlliance: "Alianse",
+      wowHorde: "Orda",
+      wowMale: "Vīrietis",
+      wowFemale: "Sieviete",
+      wowFullSet: "Pilns atbilstošs komplekts",
+      wowCustomGear: "Pielāgots ekipējuma saraksts",
+      wowHeadSlot: "Galvas slots",
+      wowShoulderSlot: "Plecu slots",
+      wowChestSlot: "Krūšu slots",
+      wowHandsSlot: "Cimdu slots",
+      wowLegsSlot: "Kāju slots",
+      wowWeaponSlot: "Galvenā ieroča slots",
+      wowOffhandSlot: "Otrās rokas / Vairoga slots",
+      wowPvPSeasons: "PvP Sezonas",
+      wowPvETiers: "PvE Tiers"
     }
   };
 
@@ -305,7 +316,9 @@
 
 
       if (translations[lang][translationKey]) {
-        if (translationKey.includes('homeTerms') || translationKey === 'homeViewAll' || translationKey === 'requestFormIntro' || translationKey.includes('priceNote')) {
+        if (el.tagName === 'OPTGROUP') {
+          el.label = translations[lang][translationKey];
+        } else if (translationKey.includes('homeTerms') || translationKey === 'homeViewAll' || translationKey === 'requestFormIntro' || translationKey.includes('priceNote')) {
           el.innerHTML = translations[lang][translationKey];
         } else {
           el.innerText = translations[lang][translationKey];
@@ -354,6 +367,7 @@
     btn.addEventListener('click', () => {
       const lang = btn.getAttribute('data-lang');
       translatePage(lang);
+      document.dispatchEvent(new CustomEvent('langChanged', { detail: { lang } }));
     });
   });
 
@@ -639,14 +653,8 @@ function setupRequestForm(db, translations, getCurrentLang) {
   const MAX_QTY = 7; // Maximum limit set to 7
 
   const designLibrary = {
-    logo: { name: "Logo", res: "Vector (.SVG/.PNG)", dimensions: "Size not predefined", customizable: true },
-    a3: { name: "A3 Poster", res: "3508 x 4961 px", dimensions: "297 x 420 mm", customizable: false },
-    a4: { name: "A4 Poster", res: "2480 x 3508 px", dimensions: "210 x 297 mm", customizable: false },
-    banner: { name: "Banner", res: "2560 x 1440 px", dimensions: "216.75 x 121.92 mm", customizable: true },
-    cover: { name: "Cover", res: "3000 x 3000 px", dimensions: "120 x 120 mm", customizable: true },
-    flyer: { name: "Flyer", res: "1748 x 2480 px", dimensions: "148 x 210 mm", customizable: true },
-    brandcard: { name: "Brand Card", res: "1050 x 600 px", dimensions: "85 x 55 mm", customizable: false },
-    profile: { name: "Profile", res: "800 x 800 px", dimensions: "67.73 x 67.73 mm", customizable: true }
+    banner: { name: "WoW Banner", res: "2560 x 1440 px", dimensions: "216.75 x 121.92 mm", customizable: true },
+    wallpaper: { name: "WoW Wallpaper", res: "3840 x 2160 px", dimensions: "Not predefined", customizable: true }
   };
 
 function renderGrid() {
@@ -680,26 +688,25 @@ function renderGrid() {
   function updateSpecs() {
     let techSpecs = [];
 
-    // Toggle detail fields visibility based on selection
-    const conditionalFields = {
-        logo: document.getElementById("logo-details"),
-        a3: document.getElementById("poster-details"),
-        a4: document.getElementById("poster-details2"),
-        banner: document.getElementById("banner-details"),
-        profile: document.getElementById("profile-details"),
-        brandcard: document.getElementById("brandcard-details"),
-        flyer: document.getElementById("Flyer-details"),
-        cover: document.getElementById("cover-details")
-    };
-    Object.values(conditionalFields).forEach(f => f?.classList.remove("visible"));
+    const wowDetailsContainer = document.getElementById("wow-details-container");
+    if (wowDetailsContainer) {
+      let showWoWDetails = false;
+      Object.keys(selectedItems).forEach(key => {
+        if (selectedItems[key] > 0 && (key === 'banner' || key === 'wallpaper')) {
+          showWoWDetails = true;
+        }
+      });
+      if (showWoWDetails) {
+        wowDetailsContainer.classList.add("visible");
+      } else {
+        wowDetailsContainer.classList.remove("visible");
+      }
+    }
 
     Object.keys(selectedItems).forEach(key => {
       const qty = selectedItems[key];
       const item = designLibrary[key];
       
-      if (conditionalFields[key]) conditionalFields[key].classList.add("visible");
-
-      // Generate tech spec lines for every single item in the quantity
       for (let i = 1; i <= qty; i++) {
         const customTag = item.customizable ? `<span class="badge-custom"></span>` : "";
         techSpecs.push(`
@@ -743,6 +750,20 @@ function renderGrid() {
       return;
     }
 
+    const hasWowItem = selectedItems['banner'] || selectedItems['wallpaper'];
+    if (hasWowItem) {
+      const selectedClass = document.getElementById("selected-class")?.value;
+      const selectedRace = document.getElementById("selected-race")?.value;
+      if (!selectedClass) {
+        alert(lang === 'lv' ? "Lūdzu, izvēlieties klasi!" : "Please choose a class!");
+        return;
+      }
+      if (!selectedRace) {
+        alert(lang === 'lv' ? "Lūdzu, izvēlieties rasi!" : "Please choose a race!");
+        return;
+      }
+    }
+
     submitBtn.disabled = true;
     submitBtn.innerText = translations[lang].formSubmitting;
     formStatus.textContent = translations[lang].formSubmitting;
@@ -758,20 +779,21 @@ function renderGrid() {
       specs: designLibrary[key].res
     }));
 
-    // 2. Dynamically collect details from visible conditional fields
-    const productDetails = {};
-    Object.keys(selectedItems).forEach(key => {
-      // This looks for the container (e.g., "logo-details") 
-      // and grabs all inputs/textareas inside it
-      const container = document.getElementById(`${key}-details`);
-      if (container) {
-        const inputs = container.querySelectorAll("input, textarea");
-        productDetails[key] = Array.from(inputs).map(input => ({
-          label: input.placeholder || input.name,
-          value: input.value
-        }));
-      }
-    });
+    // 2. Construct the character details object for WoW customization
+    const characterDetails = hasWowItem ? {
+      class: document.getElementById("selected-class")?.value || "",
+      race: document.getElementById("selected-race")?.value || "",
+      gender: document.getElementById("selected-gender")?.value || "Male",
+      tier_season: document.getElementById("wow-gear-set")?.value || "",
+      gear_mode: document.getElementById("selected-gear-mode")?.value || "full",
+      gear_head: form.querySelector("[name='gear_head']")?.value || "",
+      gear_shoulders: form.querySelector("[name='gear_shoulders']")?.value || "",
+      gear_chest: form.querySelector("[name='gear_chest']")?.value || "",
+      gear_hands: form.querySelector("[name='gear_hands']")?.value || "",
+      gear_legs: form.querySelector("[name='gear_legs']")?.value || "",
+      gear_weapon: form.querySelector("[name='gear_weapon']")?.value || "",
+      gear_offhand: form.querySelector("[name='gear_offhand']")?.value || ""
+    } : null;
 
     // 3. Construct the final object for Firestore
     const requestData = {
@@ -779,7 +801,8 @@ function renderGrid() {
       budget: baseData.budget,
       instructions: baseData.instructions,
       orderSummary: orderSummary,
-      specificDetails: productDetails, // Holds the content of the detail fields
+      characterDetails: characterDetails, // Custom character selection details
+      specificDetails: {}, // Clear previous details
       agreements: {
         terms: !!baseData.agreeTerms,
         showcase: !!baseData.agreeShowcase,
@@ -798,6 +821,26 @@ function renderGrid() {
       
       // Reset form and UI
       form.reset();
+      
+      // Reset custom WoW selection highlights
+      document.querySelectorAll(".wow-class-card").forEach(c => c.classList.remove("active"));
+      document.querySelectorAll(".wow-race-card").forEach(r => r.classList.remove("active"));
+      document.getElementById("selected-class").value = "";
+      document.getElementById("selected-race").value = "";
+      
+      const genderBtns = document.querySelectorAll(".gender-btn");
+      genderBtns.forEach(b => b.classList.remove("active"));
+      if (genderBtns[0]) genderBtns[0].classList.add("active");
+      document.getElementById("selected-gender").value = "Male";
+      
+      const gearModeBtns = document.querySelectorAll(".gear-mode-btn");
+      gearModeBtns.forEach(b => b.classList.remove("active"));
+      if (gearModeBtns[0]) gearModeBtns[0].classList.add("active");
+      document.getElementById("selected-gear-mode").value = "full";
+      
+      const customGearFields = document.getElementById("wow-custom-gear-fields");
+      if (customGearFields) customGearFields.style.display = "none";
+      
       selectedItems = {};
       renderGrid();
       
@@ -815,6 +858,60 @@ function renderGrid() {
       submitBtn.disabled = false;
       submitBtn.innerText = translations[lang].formSubmitButton;
     }
+  });
+
+  // --- WoW Selection Click Handlers Binding ---
+  const classCards = document.querySelectorAll(".wow-class-card");
+  const classInput = document.getElementById("selected-class");
+  classCards.forEach(card => {
+    card.addEventListener("click", () => {
+      classCards.forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      const selectedClass = card.getAttribute("data-class");
+      if (classInput) classInput.value = selectedClass;
+    });
+  });
+
+  const raceCards = document.querySelectorAll(".wow-race-card");
+  const raceInput = document.getElementById("selected-race");
+  raceCards.forEach(card => {
+    card.addEventListener("click", () => {
+      raceCards.forEach(r => r.classList.remove("active"));
+      card.classList.add("active");
+      const selectedRace = card.getAttribute("data-race");
+      if (raceInput) raceInput.value = selectedRace;
+    });
+  });
+
+  const genderBtns = document.querySelectorAll(".gender-btn");
+  const genderInput = document.getElementById("selected-gender");
+  genderBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      genderBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const selectedGender = btn.getAttribute("data-gender");
+      if (genderInput) genderInput.value = selectedGender;
+    });
+  });
+
+  const gearModeBtns = document.querySelectorAll(".gear-mode-btn");
+  const gearModeInput = document.getElementById("selected-gear-mode");
+  const customGearFields = document.getElementById("wow-custom-gear-fields");
+  gearModeBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      gearModeBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const mode = btn.getAttribute("data-mode");
+      if (gearModeInput) gearModeInput.value = mode;
+      
+      if (customGearFields) {
+        if (mode === "custom") {
+          customGearFields.style.display = "block";
+        } else {
+          customGearFields.style.display = "none";
+        }
+      }
+    });
   });
 
   renderGrid();

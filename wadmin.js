@@ -142,15 +142,30 @@ document.addEventListener("DOMContentLoaded", () => {
         const date = req.timestamp ? req.timestamp.toDate().toLocaleDateString() : 'N/A';
         
         let details = `Instructions: ${req.instructions || 'N/A'}\n`;
-        if (req.product_type === 'logo') {
-          details += `Brand: ${req.logo_brand_name}\nStyle: ${req.logo_style}`;
-        } else if (req.product_type === 'postera3') {
-          details += `Info: ${req.poster_info}`;
-        } else if (req.product_type === 'banner') {
-            details += `Platform: ${req.banner_platform}\nText: ${req.banner_text}`;
-        } else if (req.product_type === 'profile') {
-            details += `Username: ${req.profile_username}\nStyle: ${req.profile_style}`;
-        } else if (req.product_type === 'ui') {
+        if (req.orderSummary) {
+          req.orderSummary.forEach(item => {
+            details += `Product: ${item.name} (${item.quantity}x) - Specs: ${item.specs}\n`;
+          });
+        } else if (req.product_type) {
+          details += `Product: ${req.product_type}\n`;
+        }
+        if (req.characterDetails) {
+          const cd = req.characterDetails;
+          details += `\n[Character Customizer]\n`;
+          details += `Class: ${cd.class}\n`;
+          details += `Race: ${cd.race}\n`;
+          details += `Gender: ${cd.gender}\n`;
+          details += `Set: ${cd.tier_season}\n`;
+          details += `Gear Mode: ${cd.gear_mode === 'custom' ? 'Custom Gear' : 'Matching Set'}\n`;
+          if (cd.gear_mode === 'custom') {
+            if (cd.gear_head) details += `- Head: ${cd.gear_head}\n`;
+            if (cd.gear_shoulders) details += `- Shoulders: ${cd.gear_shoulders}\n`;
+            if (cd.gear_chest) details += `- Chest: ${cd.gear_chest}\n`;
+            if (cd.gear_hands) details += `- Hands: ${cd.gear_hands}\n`;
+            if (cd.gear_legs) details += `- Legs: ${cd.gear_legs}\n`;
+            if (cd.gear_weapon) details += `- Weapon: ${cd.gear_weapon}\n`;
+            if (cd.gear_offhand) details += `- Off Hand/Shield: ${cd.gear_offhand}\n`;
+          }
         }
         
         // FIX: Changed <pre> to <div> to allow CSS word-wrapping
@@ -217,16 +232,30 @@ document.addEventListener("DOMContentLoaded", () => {
         const date = req.timestamp ? req.timestamp.toDate().toLocaleDateString() : 'N/A';
         
         let details = `Instructions: ${req.instructions || 'N/A'}\n`;
-        if (req.product_type === 'logo') {
-          details += `Brand: ${req.logo_brand_name}\nStyle: ${req.logo_style}`;
-        } else if (req.product_type === 'postera3') {
-          details += `Info: ${req.poster_info}`;
-        } else if (req.product_type === 'banner') {
-            details += `Platform: ${req.banner_platform}\nText: ${req.banner_text}`;
-        } else if (req.product_type === 'profile') {
-            details += `Username: ${req.profile_username}\nStyle: ${req.profile_style}`;
-        } else if (req.product_type === 'ui') {
-            details += `UI Platform: ${req.ui_platform}\nLayout Info: ${req.ui_info}`;
+        if (req.orderSummary) {
+          req.orderSummary.forEach(item => {
+            details += `Product: ${item.name} (${item.quantity}x) - Specs: ${item.specs}\n`;
+          });
+        } else if (req.product_type) {
+          details += `Product: ${req.product_type}\n`;
+        }
+        if (req.characterDetails) {
+          const cd = req.characterDetails;
+          details += `\n[Character Customizer]\n`;
+          details += `Class: ${cd.class}\n`;
+          details += `Race: ${cd.race}\n`;
+          details += `Gender: ${cd.gender}\n`;
+          details += `Set: ${cd.tier_season}\n`;
+          details += `Gear Mode: ${cd.gear_mode === 'custom' ? 'Custom Gear' : 'Matching Set'}\n`;
+          if (cd.gear_mode === 'custom') {
+            if (cd.gear_head) details += `- Head: ${cd.gear_head}\n`;
+            if (cd.gear_shoulders) details += `- Shoulders: ${cd.gear_shoulders}\n`;
+            if (cd.gear_chest) details += `- Chest: ${cd.gear_chest}\n`;
+            if (cd.gear_hands) details += `- Hands: ${cd.gear_hands}\n`;
+            if (cd.gear_legs) details += `- Legs: ${cd.gear_legs}\n`;
+            if (cd.gear_weapon) details += `- Weapon: ${cd.gear_weapon}\n`;
+            if (cd.gear_offhand) details += `- Off Hand/Shield: ${cd.gear_offhand}\n`;
+          }
         }
         
         // FIX: Changed <pre> to <div>

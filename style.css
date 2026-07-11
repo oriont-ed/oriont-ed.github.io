@@ -827,5 +827,279 @@ hr {
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   unicode-bidi: isolate;
-
 }
+
+/* ---------- WoW Custom Form Styles ---------- */
+.inline-wow-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
+  border: 1px solid #c69b3d;
+  border-radius: 3px;
+  box-shadow: 0 0 3px rgba(198, 155, 61, 0.5);
+}
+
+.wow-form-section-title {
+  font-size: 1.3rem;
+  color: #c69b3d;
+  border-bottom: 2px solid #c69b3d;
+  padding-bottom: 8px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px rgba(198, 155, 61, 0.3);
+  display: flex;
+  align-items: center;
+}
+
+.wow-class-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.wow-class-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #121215;
+  border: 1px solid #2d2d38;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.wow-class-card img {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #444;
+  border-radius: 3px;
+}
+
+.wow-class-card span {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ccc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wow-class-card:hover {
+  border-color: var(--class-color, #c69b3d);
+  background: #1a1a22;
+  transform: translateY(-2px);
+}
+
+.wow-class-card.active {
+  border-color: var(--class-color, #c69b3d);
+  background: #1e1e26;
+  box-shadow: 0 0 10px var(--class-color, rgba(198, 155, 61, 0.4));
+}
+
+.wow-class-card.active span {
+  color: #fff;
+  font-weight: 600;
+}
+
+.faction-title {
+  font-size: 0.95rem;
+  margin: 15px 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.alliance-text {
+  color: #0070de;
+  text-shadow: 0 0 3px rgba(0, 112, 222, 0.3);
+}
+
+.horde-text {
+  color: #c41f3b;
+  text-shadow: 0 0 3px rgba(196, 31, 59, 0.3);
+}
+
+.wow-race-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.wow-race-card {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #121215;
+  border: 1px solid #2d2d38;
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.wow-race-card img {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #444;
+  border-radius: 3px;
+}
+
+.wow-race-card span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #ccc;
+}
+
+.wow-race-card:hover {
+  border-color: #c69b3d;
+  background: #1a1a22;
+}
+
+.alliance-grid .wow-race-card.active {
+  border-color: #0070de;
+  background: #0f1c2d;
+  box-shadow: 0 0 8px rgba(0, 112, 222, 0.4);
+}
+
+.horde-grid .wow-race-card.active {
+  border-color: #c41f3b;
+  background: #250f14;
+  box-shadow: 0 0 8px rgba(196, 31, 59, 0.4);
+}
+
+.wow-race-card.active span {
+  color: #fff;
+  font-weight: 600;
+}
+
+.wow-gender-selector, .wow-gear-mode-selector {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.gender-btn, .gear-mode-btn {
+  flex: 1;
+  background: #121215;
+  border: 1px solid #2d2d38;
+  color: #aaa;
+  padding: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.gender-btn:hover, .gear-mode-btn:hover {
+  background: #1a1a22;
+  color: #fff;
+  border-color: #c69b3d;
+}
+
+.gender-btn.active, .gear-mode-btn.active {
+  background: #c69b3d;
+  color: #000;
+  font-weight: 600;
+  border-color: #fff;
+  box-shadow: 0 0 8px rgba(198, 155, 61, 0.4);
+}
+
+.custom-gear-fields-container {
+  background: #0d0d10 !important;
+  border: 1px solid #c69b3d !important;
+  border-radius: 5px;
+  padding: 15px !important;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: inset 0 0 10px rgba(198, 155, 61, 0.1);
+}
+
+.gear-input-row {
+  display: flex;
+  gap: 15px;
+}
+
+.gear-input-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.gear-input-field.full-width {
+  flex: 1;
+}
+
+.gear-input-field label {
+  font-size: 0.8rem !important;
+  color: #c69b3d !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.gear-input-field input {
+  background: #15151c !important;
+  border: 1px solid #2d2d38 !important;
+  color: #fff !important;
+  font-size: 0.9rem !important;
+}
+
+.gear-input-field input:focus {
+  border-color: #c69b3d !important;
+  outline: none;
+  box-shadow: 0 0 5px rgba(198, 155, 61, 0.3);
+}
+
+#wow-gear-set {
+  background: #121215;
+  color: #fff;
+  border: 1px solid #2d2d38;
+  border-radius: 4px;
+  padding: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#wow-gear-set:focus {
+  border-color: #c69b3d;
+  outline: none;
+}
+
+#wow-gear-set optgroup {
+  background: #121215;
+  color: #c69b3d;
+  font-weight: 600;
+}
+
+#wow-gear-set option {
+  background: #1c1c24;
+  color: #fff;
+  font-weight: normal;
+}
+
+@media (max-width: 600px) {
+  .gear-input-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+

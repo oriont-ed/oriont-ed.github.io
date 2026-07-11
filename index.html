@@ -88,14 +88,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td data-key="priceLogo">Logo Graphical</td><td data-key="notpredefined">No predefined size</td></tr>
-                  <tr><td data-key="priceA3">A3 Poster Graphical</td><td>(297 x 420 mm)</td></tr>
-                  <tr><td data-key="priceA4">A4 Poster Graphical</td><td>(210 x 297 mm)</td></tr>
-                  <tr><td data-key="priceCover">Cover Graphical</td><td>(120 x 120 mm)</td></tr>
-                  <tr><td data-key="priceFlyer">Flyer Graphical</td><td>(148 x 210 mm))</td></tr>
-                  <tr><td data-key="priceBrandCard">Brand Card Graphical</td><td>(85 x 55 mm)</td></tr>
-                  <tr><td data-key="priceBanner">Banner / Header Graphical</td><td>(216.75 x 121.92 mm) </td></tr>
-                  <tr><td data-key="priceProfile">Profile Graphical</td><td>(67.73 x 67.73 mm)</td></tr>
+                  <tr><td data-key="priceBanner">World of Warcraft Banner</td><td>(216.75 x 121.92 mm)</td></tr>
+                  <tr><td data-key="priceWallpaper">World of Warcraft Wallpaper / Character Background</td><td data-key="notpredefined">No predefined size</td></tr>
                 </tbody>
               </table>
 
@@ -127,13 +121,8 @@
 
           <div class="filter-controls">
             <button class="filter-btn active" data-filter="all" data-key="filterAll">All</button>
-            <button class="filter-btn" data-filter="logo" data-key="filterLogos">Logos</button>
-            <button class="filter-btn" data-filter="cover" data-key="filterCover">Kovers</button>
-            <button class="filter-btn" data-filter="posters" data-key="filterPosters">Posters</button>
             <button class="filter-btn" data-filter="banner" data-key="filterBanners">Banners</button>
-            <button class="filter-btn" data-filter="profile" data-key="filterProfile">Profiles</button>
-            <button class="filter-btn" data-filter="brandcard" data-key="filterBrandCard">Brand Cards</button>
-            <button class="filter-btn" data-filter="flyer" data-key="filterFlyer">Flajers</button>
+            <button class="filter-btn" data-filter="wallpaper" data-key="filterWallpapers">Wallpapers</button>
           </div>
 
           <div class="gallery-container" id="portfolio-gallery"></div>
@@ -218,16 +207,14 @@
           
           <form id="request-form">
             <div class="form-group">
-             <label for="email" data-key="formEmail">Your Email Address</label>
-            <input type="email" id="email" name="email" required placeholder="your.email@example.com">
-          </div>
+              <label for="email" data-key="formEmail"><img src="images/WoW Icon Pack/Miscellaneous/01_1.png" alt="Email Icon" class="inline-wow-icon"> Your Email Address</label>
+              <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+            </div>
 
-          <div class="form-group">
+            <div class="form-group">
               <div id="product-selection-grid" class="product-grid"></div>
               <div class="tech-res-display" class="tech-info" data-key="FormalSelectProductAbove">Choose Product Above.</div>
-                <input type="hidden" id="final-selection-data" name="final_selection">
-
-              </select>
+              <input type="hidden" id="final-selection-data" name="final_selection">
               <small class="smart-guide" data-key="FormalSmartGuide">* Smart Guide: Sizes are Width x Height & mm</small>
             </div>
             
@@ -244,69 +231,206 @@
               </div>
             </div>
 
-
             <div class="form-group">
-              <label for="budget" data-key="formBudget">Total Estimated Cost (EUR)</label>
+              <label for="budget" data-key="formBudget"><img src="images/WoW Icon Pack/Miscellaneous/Coin_01.png" alt="Budget Icon" class="inline-wow-icon"> Total Estimated Cost (EUR)</label>
               <input type="number" id="budget" name="budget" placeholder="0" min="0">
             </div>
 
-            <div class="form-group conditional-details" id="logo-details">
-              <label data-key="formLogoDetails">Logo Details</label>
-              <input type="text" name="logo_brand_name" placeholder="Brand Name" data-key-placeholder="formLogoPlaceholder1">
-              <textarea name="logo_style" placeholder="Describe the style (e.g., modern, minimalist, retro) and any color preferences?" data-key-placeholder="formLogoPlaceholder2"></textarea>
-            </div>
-            
-            <div class="form-group conditional-details" id="brandcard-details">
-              <label data-key="formBrand-CardDetails">Brand Card Details</label>
-              <input type="text" name="Brand-Card_name" placeholder="Brand Name" data-key-placeholder="formBrandcardPlaceholder1">
-              <input type="text" name="Brand-Card_name" placeholder="Phone Number" data-key-placeholder="formBrandcardPlaceholder2">
-              <input type="text" name="Brand-Card_name" placeholder="E-mail" data-key-placeholder="formBrandcardPlaceholder3">
-              <input type="text" name="Brand-Card_name" placeholder="Extra" data-key-placeholder="formBrandcardPlaceholder4">
-              <textarea name="Brand-Card_style" placeholder="Describe the style (e.g., modern, minimalist, retro) and any color preferences?" data-key-placeholder="formBrandCardPlaceholder5"></textarea>
-            </div>
-            
-            
-            <div class="form-group conditional-details" id="poster-details">
-              <label data-key="formPosterDetails">A3 Poster</label>
-              <textarea name="poster_info" placeholder="What text, dates, and information must be on the poster?" data-key-placeholder="formPosterPlaceholder"></textarea>
-              <textarea name="poster_info" placeholder="Describe any style (e.g., modern, minimalist, retro) or any color preferences?" data-key-placeholder="formPosterPlaceholder2"></textarea>
-            </div>
+            <!-- WoW Character Builder Details -->
+            <div id="wow-details-container" class="form-group conditional-details">
+              <h3 class="wow-form-section-title"><img src="images/WoW Icon Pack/Miscellaneous/Book_01.png" alt="Icon" class="inline-wow-icon"> <span data-key="wowCustomizerTitle">Character Customizer</span></h3>
+              
+              <!-- WoW Class Selector -->
+              <div class="form-group">
+                <label><img src="images/WoW Icon Pack/Spells/ClassIcon.png" alt="Class" class="inline-wow-icon"> <span data-key="wowChooseClass">Choose Class</span></label>
+                <div class="wow-class-grid">
+                  <div class="wow-class-card" data-class="Death Knight" style="--class-color: #C41F3B;">
+                    <img src="images/WoW Icon Pack/Spells/UnholyPresence.png" alt="Death Knight">
+                    <span>Death Knight</span>
+                  </div>
+                  <div class="wow-class-card" data-class="Druid" style="--class-color: #FF7D0A;">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/druid.png" alt="Druid">
+                    <span>Druid</span>
+                  </div>
+                  <div class="wow-class-card" data-class="Hunter" style="--class-color: #ABD473;">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/hunter.png" alt="Hunter">
+                    <span>Hunter</span>
+                  </div>
+                  <div class="wow-class-card" data-class="Mage" style="--class-color: #40C7EB;">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/mage.png" alt="Mage">
+                    <span>Mage</span>
+                  </div>
+                  <div class="wow-class-card" data-class="Paladin" style="--class-color: #F58CBA;">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/paladin.png" alt="Paladin">
+                    <span>Paladin</span>
+                  </div>
+                  <div class="wow-class-card" data-class="Priest" style="--class-color: #FFFFFF;">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/priest.png" alt="Priest">
+                    <span>Priest</span>
+                  </div>
+                  <div class="wow-class-card" data-class="Rogue" style="--class-color: #FFF569;">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/rogue.png" alt="Rogue">
+                    <span>Rogue</span>
+                  </div>
+                  <div class="wow-class-card" data-class="Shaman" style="--class-color: #0070DE;">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/shaman.png" alt="Shaman">
+                    <span>Shaman</span>
+                  </div>
+                  <div class="wow-class-card" data-class="Warlock" style="--class-color: #9482C9;">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/warlock.png" alt="Warlock">
+                    <span>Warlock</span>
+                  </div>
+                  <div class="wow-class-card" data-class="Warrior" style="--class-color: #C79C6E;">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/warrior.png" alt="Warrior">
+                    <span>Warrior</span>
+                  </div>
+                </div>
+                <input type="hidden" id="selected-class" name="wow_class">
+              </div>
 
+              <!-- WoW Race Selector -->
+              <div class="form-group">
+                <label><img src="images/WoW Icon Pack/Characters and Creatures/human.png" alt="Race" class="inline-wow-icon"> <span data-key="wowChooseRace">Choose Race</span></label>
+                
+                <h4 class="faction-title alliance-text" data-key="wowAlliance">Alliance</h4>
+                <div class="wow-race-grid alliance-grid">
+                  <div class="wow-race-card" data-race="Human">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/human.png" alt="Human">
+                    <span>Human</span>
+                  </div>
+                  <div class="wow-race-card" data-race="Dwarf">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/dwarf.png" alt="Dwarf">
+                    <span>Dwarf</span>
+                  </div>
+                  <div class="wow-race-card" data-race="Night Elf">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/nelf.png" alt="Night Elf">
+                    <span>Night Elf</span>
+                  </div>
+                  <div class="wow-race-card" data-race="Gnome">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/gnome.png" alt="Gnome">
+                    <span>Gnome</span>
+                  </div>
+                  <div class="wow-race-card" data-race="Draenei">
+                    <img src="images/WoW Icon Pack/Weapons/Draenei_01.png" alt="Draenei">
+                    <span>Draenei</span>
+                  </div>
+                </div>
 
-            <div class="form-group conditional-details" id="poster-details2">
-              <label data-key="formPosterDetails2">A4 Poster</label>
-              <textarea name="poster_info" placeholder="What text, dates, and information must be on the poster?" data-key-placeholder="formPosterPlaceholder"></textarea>
-              <textarea name="poster_info" placeholder="Describe any style (e.g., modern, minimalist, retro) or any color preferences?" data-key-placeholder="formPosterPlaceholder2"></textarea>
+                <h4 class="faction-title horde-text" data-key="wowHorde">Horde</h4>
+                <div class="wow-race-grid horde-grid">
+                  <div class="wow-race-card" data-race="Orc">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/orc.png" alt="Orc">
+                    <span>Orc</span>
+                  </div>
+                  <div class="wow-race-card" data-race="Undead">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/undead.png" alt="Undead">
+                    <span>Undead</span>
+                  </div>
+                  <div class="wow-race-card" data-race="Tauren">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/tauren.png" alt="Tauren">
+                    <span>Tauren</span>
+                  </div>
+                  <div class="wow-race-card" data-race="Troll">
+                    <img src="images/WoW Icon Pack/Characters and Creatures/troll.png" alt="Troll">
+                    <span>Troll</span>
+                  </div>
+                  <div class="wow-race-card" data-race="Blood Elf">
+                    <img src="images/WoW Icon Pack/Weapons/BloodElf_03.png" alt="Blood Elf">
+                    <span>Blood Elf</span>
+                  </div>
+                </div>
+                <input type="hidden" id="selected-race" name="wow_race">
+              </div>
+
+              <!-- Gender Selection -->
+              <div class="form-group">
+                <label><img src="images/WoW Icon Pack/Characters and Creatures/femalehuman.png" alt="Gender" class="inline-wow-icon"> <span data-key="wowGender">Character Gender</span></label>
+                <div class="wow-gender-selector">
+                  <button type="button" class="gender-btn active" data-gender="Male" data-key="wowMale">Male</button>
+                  <button type="button" class="gender-btn" data-gender="Female" data-key="wowFemale">Female</button>
+                </div>
+                <input type="hidden" id="selected-gender" name="wow_gender" value="Male">
+              </div>
+
+              <!-- Gear Set Options (S1-S8, T7-T10) -->
+              <div class="form-group">
+                <label for="wow-gear-set"><img src="images/WoW Icon Pack/Armour/83.png" alt="Gear" class="inline-wow-icon"> <span data-key="wowGearSet">PvE Tier / PvP Season Gear</span></label>
+                <select id="wow-gear-set" name="wow_gear_set">
+                  <optgroup label="PvP Arena Seasons" data-key="wowPvPSeasons">
+                    <option value="Season 8 (Wrathful Gladiator)">Season 8 (Wrathful Gladiator)</option>
+                    <option value="Season 7 (Relentless Gladiator)">Season 7 (Relentless Gladiator)</option>
+                    <option value="Season 6 (Furious Gladiator)">Season 6 (Furious Gladiator)</option>
+                    <option value="Season 5 (Deadly Gladiator)">Season 5 (Deadly Gladiator)</option>
+                    <option value="Season 4 (Brutal Gladiator)">Season 4 (Brutal Gladiator)</option>
+                    <option value="Season 3 (Vengeful Gladiator)">Season 3 (Vengeful Gladiator)</option>
+                    <option value="Season 2 (Merciless Gladiator)">Season 2 (Merciless Gladiator)</option>
+                    <option value="Season 1 (Gladiator)">Season 1 (Gladiator)</option>
+                  </optgroup>
+                  <optgroup label="PvE Tiers" data-key="wowPvETiers">
+                    <option value="Tier 10 (Icecrown Citadel)">Tier 10 (Icecrown Citadel)</option>
+                    <option value="Tier 9 (Trial of the Crusader)">Tier 9 (Trial of the Crusader)</option>
+                    <option value="Tier 8 (Ulduar)">Tier 8 (Ulduar)</option>
+                    <option value="Tier 7 (Naxxramas)">Tier 7 (Naxxramas)</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <!-- Gear Mode Selection -->
+              <div class="form-group">
+                <label><img src="images/WoW Icon Pack/Armour/84.png" alt="Mode" class="inline-wow-icon"> <span data-key="wowGearCustomization">Gear Customization</span></label>
+                <div class="wow-gear-mode-selector">
+                  <button type="button" class="gear-mode-btn active" data-mode="full" data-key="wowFullSet">Full Matching Set</button>
+                  <button type="button" class="gear-mode-btn" data-mode="custom" data-key="wowCustomGear">Custom Gear List</button>
+                </div>
+                <input type="hidden" id="selected-gear-mode" name="wow_gear_mode" value="full">
+              </div>
+
+              <!-- Custom Gear Inputs -->
+              <div id="wow-custom-gear-fields" class="form-group custom-gear-fields-container" style="display: none;">
+                <div class="gear-input-row">
+                  <div class="gear-input-field">
+                    <label><img src="images/WoW Icon Pack/Armour/100.png" alt="Head" class="inline-wow-icon"> <span data-key="wowHeadSlot">Head Slot</span></label>
+                    <input type="text" name="gear_head" placeholder="e.g. Sanctified Ymirjar Lord's Helmet">
+                  </div>
+                  <div class="gear-input-field">
+                    <label><img src="images/WoW Icon Pack/Armour/101.png" alt="Shoulders" class="inline-wow-icon"> <span data-key="wowShoulderSlot">Shoulder Slot</span></label>
+                    <input type="text" name="gear_shoulders" placeholder="e.g. Sanctified Ymirjar Lord's Pauldrons">
+                  </div>
+                </div>
+                
+                <div class="gear-input-row">
+                  <div class="gear-input-field">
+                    <label><img src="images/WoW Icon Pack/Armour/102.png" alt="Chest" class="inline-wow-icon"> <span data-key="wowChestSlot">Chest Slot</span></label>
+                    <input type="text" name="gear_chest" placeholder="e.g. Sanctified Ymirjar Lord's Cuirass">
+                  </div>
+                  <div class="gear-input-field">
+                    <label><img src="images/WoW Icon Pack/Armour/103.png" alt="Hands" class="inline-wow-icon"> <span data-key="wowHandsSlot">Gloves Slot</span></label>
+                    <input type="text" name="gear_hands" placeholder="e.g. Sanctified Ymirjar Lord's Handguards">
+                  </div>
+                </div>
+
+                <div class="gear-input-row">
+                  <div class="gear-input-field">
+                    <label><img src="images/WoW Icon Pack/Armour/104.png" alt="Legs" class="inline-wow-icon"> <span data-key="wowLegsSlot">Legs Slot</span></label>
+                    <input type="text" name="gear_legs" placeholder="e.g. Sanctified Ymirjar Lord's Legplates">
+                  </div>
+                  <div class="gear-input-field">
+                    <label><img src="images/WoW Icon Pack/Weapons/Unique_Sulfuras.png" alt="Weapon" class="inline-wow-icon"> <span data-key="wowWeaponSlot">Main Hand Weapon</span></label>
+                    <input type="text" name="gear_weapon" placeholder="e.g. Shadowmourne">
+                  </div>
+                </div>
+
+                <div class="gear-input-row">
+                  <div class="gear-input-field full-width">
+                    <label><img src="images/WoW Icon Pack/Armour/106.png" alt="Offhand" class="inline-wow-icon"> <span data-key="wowOffhandSlot">Off Hand / Shield</span></label>
+                    <input type="text" name="gear_offhand" placeholder="e.g. Icecrown Glacial Wall">
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div class="form-group conditional-details" id="banner-details">
-              <label data-key="formBannerDetails">Banner</label>
-              <input type="text" name="banner_platform" placeholder="Platform (e.g., YouTube, Twitter, Website)" data-key-placeholder="formBannerPlaceholder1">
-              <input type="text" name="banner_platform" placeholder="What text or @usernames should be on the banner?" data-key-placeholder="formBannerPlaceholder2">
-              <textarea name="banner_text" placeholder="Describe any style (e.g., modern, minimalist, retro) or any color preferences?" data-key-placeholder="formBannerPlaceholder3"></textarea>
-            </div>
-
-            <div class="form-group conditional-details visible" id="profile-details">
-              <label data-key="formProfileDetails">Profile Details</label>
-              <input type="text" name="profile_username" placeholder="Username or Text for profile pic" data-key-placeholder="formProfilePlaceholder1">
-              <input type="file" id="file" name="file" accept="image/png, image/jpeg" />
-            </div>
-
-            <div class="form-group conditional-details visible" id="Flyer-details">
-              <label data-key="formFlyerDetails">Flyer-details</label>
-              <input type="text" name="Flyer_username" placeholder="What text, dates, and information must be on the flyer?" data-key-placeholder="formFlyerPlaceholder1">
-              <textarea name="Flyer_style" placeholder="Color scheme, style, or any specific ideas." data-key-placeholder="formFlyerPlaceholder2"></textarea>
-            </div>
-
-            <div class="form-group conditional-details visible" id="cover-details">
-              <label data-key="formCoverDetails">Cover-details</label>
-              <input type="text" name="Cover_username" placeholder="What informational text must be on cover?" data-key-placeholder="formCoverPlaceholder1">
-              <textarea name="Cover_style" placeholder="Color scheme, style, or any specific ideas?" data-key-placeholder="formCoverPlaceholder2"></textarea>
-            </div>
-
 
             <div class="form-group">
-              <label for="instructions" data-key="formInstructions">General Instructions / Project Brief</label>
+              <label for="instructions" data-key="formInstructions"><img src="images/WoW Icon Pack/Miscellaneous/Book_02.png" alt="Instructions Icon" class="inline-wow-icon"> General Instructions / Project Brief</label>
               <textarea id="instructions" name="instructions" rows="5" placeholder="Please provide a clear and detailed brief of your requirements. Include links to any inspiration or references." data-key-placeholder="formInstructionsPlaceholder"></textarea>
             </div>
 
