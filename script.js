@@ -23,6 +23,7 @@
       homeTermsContact: "Contacts: whazorz.design@gmail.com",
       priceHeaderProduct: "Available Products",
       priceHeaderRes: "Technical Resolution (In MM)",
+      priceHeaderCost: "Cost",
       notpredefined: "Not Predefined size",
       // UPDATED PRICES/PRODUCTS
       priceBanner: "World of Warcraft Banner",
@@ -87,9 +88,9 @@
       formEmailPlaceholder: "your.email@example.com",
       formProduct: "Select Product Type",
       // UPDATED OPTIONS
-      formOptionBanner: "WoW Banner (15 Eur)",
-      formOptionWallpaper: "WoW Wallpaper (25 Eur)",
-      formBudget: "Your Budget (EUR)",
+      formOptionBanner: "WoW Banner (5.00 Eur)",
+      formOptionWallpaper: "WoW Wallpaper (13.50 Eur)",
+      formBudget: "Total Cost (EUR)",
       formLogoDetails: "Logo Details",
       formLogoPlaceholder1: "Brand Name",
       formBrandcardPlaceholder1: "Brand Name",
@@ -148,7 +149,8 @@
       wowWeaponSlot: "Main Hand Weapon",
       wowOffhandSlot: "Off Hand / Shield",
       wowPvPSeasons: "PvP Arena Seasons",
-      wowPvETiers: "PvE Tiers"
+      wowPvETiers: "PvE Tiers",
+      formPayNotice: "Form validated! Please complete the payment using the PayPal buttons below."
     },
     lv: {
       // Nav
@@ -171,8 +173,9 @@
       homeTermsPayment: "<strong>Apmaksa:</strong> Apmaksa tiek veikta *pēc* tam, kad esat apstiprinājis dizainu. Norādītās cenas ir aptuvenas un var mainīties.",
       homeTermsComm: "<strong>Komunikācija:</strong> Visa projekta komunikācija notiks pa e-pastu.",
       homeTermsContact: "Kontakti: whazorz.design@gmail.com",
-      priceHeaderProduct: "Pieejamie Produkti",
+      priceHeaderProduct: "Pieejamie produkti",
       priceHeaderRes: "Tehniskās Rezolūcijas (Iekš MM)",
+      priceHeaderCost: "Cena",
       notpredefined: "Nav definēts izmērs.",
       // UPDATED PRICES/PRODUCTS
       priceBanner: "World of Warcraft Banneris",
@@ -233,9 +236,9 @@
       formEmailPlaceholder: "jusu.epasts@piemers.com",
       formProduct: "Izvēlieties produkta veidu",
       // UPDATED OPTIONS
-      formOptionBanner: "WoW Banneris (15 Eur)",
-      formOptionWallpaper: "WoW Fona Attēls (25 Eur)",
-      formBudget: "Tavs Budžets (EUR)",
+      formOptionBanner: "WoW Banneris (5.00 Eur)",
+      formOptionWallpaper: "WoW Fona Attēls (13.50 Eur)",
+      formBudget: "Kopējā Cena (EUR)",
       formLogoDetails: "Logo detaļas",
       formLogoPlaceholder1: "Zīmola nosaukums",
       formBrandcardPlaceholder1: "Zīmola nosaukums",
@@ -292,7 +295,8 @@
       wowWeaponSlot: "Galvenā ieroča slots",
       wowOffhandSlot: "Otrās rokas / Vairoga slots",
       wowPvPSeasons: "PvP Sezonas",
-      wowPvETiers: "PvE Tiers"
+      wowPvETiers: "PvE Tiers",
+      formPayNotice: "Forma apstiprināta! Lūdzu, veiciet maksājumu, izmantojot PayPal pogas zemāk."
     }
   };
 
@@ -638,7 +642,7 @@
   }
 
 
-// --- 12. Request Form (Updated 2026 - Clickable & Bulk) ---
+// --- 12. Request Form (Updated 2026 - Clickable & Bulk with PayPal) ---
 function setupRequestForm(db, translations, getCurrentLang) {
   const form = document.getElementById("request-form");
   if (!form) return;
@@ -650,11 +654,10 @@ function setupRequestForm(db, translations, getCurrentLang) {
   const resOutput = document.getElementById("res-output");
 
   let selectedItems = {}; 
-  const MAX_QTY = 7; // Maximum limit set to 7
 
   const designLibrary = {
-    banner: { name: "WoW Banner", res: "2560 x 1440 px", dimensions: "216.75 x 121.92 mm", customizable: true },
-    wallpaper: { name: "WoW Wallpaper", res: "3840 x 2160 px", dimensions: "Not predefined", customizable: true }
+    banner: { name: "WoW Banner", res: "2560 x 1440 px", dimensions: "216.75 x 121.92 mm", customizable: true, maxQty: 1, price: 5.00 },
+    wallpaper: { name: "WoW Wallpaper", res: "3840 x 2160 px", dimensions: "Not predefined", customizable: true, maxQty: 2, price: 13.50 }
   };
 
 function renderGrid() {
@@ -664,25 +667,30 @@ function renderGrid() {
       const count = selectedItems[key] || 0;
       const isSelected = count > 0;
 
+      const lang = getCurrentLang();
+      const translationKey = `price${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      const displayName = (translations[lang] && translations[lang][translationKey]) || item.name;
+
       const card = document.createElement("div");
       card.className = `product-card ${isSelected ? 'active' : ''}`;
       
       card.innerHTML = `
         <div class="card-main">
-          <strong>${item.name}</strong>
+          <strong>${displayName}</strong>
           <small style="display:block; opacity: 0.8;">${item.dimensions}</small>
         </div>
         ${isSelected ? `
           <div class="card-qty">
             <button type="button" class="qty-btn" data-action="minus" data-key="${key}">-</button>
             <span class="qty-val">${count}</span>
-            <button type="button" class="qty-btn" data-action="plus" data-key="${key}" ${count >= MAX_QTY ? 'disabled' : ''}>+</button>
+            <button type="button" class="qty-btn" data-action="plus" data-key="${key}" ${count >= item.maxQty ? 'disabled' : ''}>+</button>
           </div>
         ` : `<button type="button" class="add-btn add-space" data-action="add" data-key="${key}">Add</button>`}
       `;
       gridContainer.appendChild(card);
     });
     updateSpecs();
+    updateBudget();
   }
 
   function updateSpecs() {
@@ -721,6 +729,16 @@ function renderGrid() {
     resOutput.innerHTML = techSpecs.length > 0 ? techSpecs.join("") : "Select products above.";
   }
 
+  function updateBudget() {
+    let total = 0;
+    if (selectedItems['banner']) total += selectedItems['banner'] * designLibrary['banner'].price;
+    if (selectedItems['wallpaper']) total += selectedItems['wallpaper'] * designLibrary['wallpaper'].price;
+    
+    if (budgetInput) {
+      budgetInput.value = total > 0 ? total.toFixed(2) : "";
+    }
+  }
+
   // Event Delegation
   gridContainer.addEventListener("click", e => {
     const btn = e.target.closest("button");
@@ -731,7 +749,8 @@ function renderGrid() {
 
     if (action === "add" || action === "plus") {
       const currentQty = selectedItems[key] || 0;
-      if (currentQty < MAX_QTY) {
+      const maxAllowed = designLibrary[key] ? designLibrary[key].maxQty : 7;
+      if (currentQty < maxAllowed) {
         selectedItems[key] = currentQty + 1;
       }
     } else if (action === "minus") {
@@ -740,7 +759,193 @@ function renderGrid() {
     renderGrid();
   });
 
-// --- 12. Request Form (Updated Submit Handler) ---
+  // Helper functions to disable/enable inputs
+  function disableFormInputs() {
+    form.querySelectorAll("input, textarea, select, button:not(.paypal-button)").forEach(el => {
+      if (el.id !== "submit-btn") {
+        el.disabled = true;
+      }
+    });
+    form.classList.add("form-disabled");
+  }
+
+  function enableFormInputs() {
+    form.querySelectorAll("input, textarea, select, button").forEach(el => {
+      el.disabled = false;
+    });
+    form.classList.remove("form-disabled");
+  }
+
+  function resetWowSelectionUI() {
+    document.querySelectorAll(".wow-class-card").forEach(c => c.classList.remove("active"));
+    document.querySelectorAll(".wow-race-card").forEach(r => r.classList.remove("active"));
+    document.getElementById("selected-class").value = "";
+    document.getElementById("selected-race").value = "";
+    
+    const genderBtns = document.querySelectorAll(".gender-btn");
+    genderBtns.forEach(b => b.classList.remove("active"));
+    if (genderBtns[0]) genderBtns[0].classList.add("active");
+    document.getElementById("selected-gender").value = "Male";
+    
+    const gearModeBtns = document.querySelectorAll(".gear-mode-btn");
+    gearModeBtns.forEach(b => b.classList.remove("active"));
+    if (gearModeBtns[0]) gearModeBtns[0].classList.add("active");
+    document.getElementById("selected-gear-mode").value = "full";
+    
+    const customGearFields = document.getElementById("wow-custom-gear-fields");
+    if (customGearFields) customGearFields.style.display = "none";
+  }
+
+  // Client-Side Webhook POST Trigger
+  async function triggerWebhook(url, requestData) {
+    if (!url || url.includes("YOUR_WEBHOOK_URL_HERE") || url.trim() === "") {
+      console.warn("Webhook not configured. Skipping webhook trigger.");
+      return;
+    }
+    try {
+      await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: `🆕 **Jauns WoW grafikas pieprasījums saņemts! / New WoW Request Received!**`,
+          embeds: [{
+            title: `Order #${requestData.paymentDetails.orderId}`,
+            color: 13016893,
+            fields: [
+              { name: "Payer Email", value: requestData.email, inline: true },
+              { name: "Paid Amount", value: `${requestData.paymentDetails.amount} EUR`, inline: true },
+              { name: "Transaction ID", value: requestData.paymentDetails.transactionId, inline: true },
+              { name: "Products Ordered", value: requestData.orderSummary.map(item => `${item.name} (${item.quantity}x)`).join(", ") },
+              { name: "Character Details", value: requestData.characterDetails ? `Class: ${requestData.characterDetails.class}\nRace: ${requestData.characterDetails.race}\nGender: ${requestData.characterDetails.gender}\nSet: ${requestData.characterDetails.tier_season}` : "N/A" },
+              { name: "Instructions", value: requestData.instructions || "None" }
+            ],
+            timestamp: new Date().toISOString()
+          }]
+        })
+      });
+      console.log("Webhook triggered successfully");
+    } catch (e) {
+      console.error("Failed to trigger webhook:", e);
+    }
+  }
+
+  // PayPal Buttons Integration
+  const paypalContainer = document.getElementById("paypal-button-container");
+  if (window.paypal) {
+    window.paypal.Buttons({
+      createOrder: function(data, actions) {
+        let total = 0;
+        if (selectedItems['banner']) total += selectedItems['banner'] * designLibrary['banner'].price;
+        if (selectedItems['wallpaper']) total += selectedItems['wallpaper'] * designLibrary['wallpaper'].price;
+        
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              currency_code: 'EUR',
+              value: total.toFixed(2)
+            },
+            description: 'WDESIGN WoW Graphics Request'
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(async function(details) {
+          const lang = getCurrentLang();
+          formStatus.textContent = translations[lang].formSubmitting;
+          formStatus.className = "info";
+
+          const formData = new FormData(form);
+          const baseData = Object.fromEntries(formData.entries());
+
+          const orderSummary = Object.keys(selectedItems).map(key => ({
+            productKey: key,
+            name: designLibrary[key].name,
+            quantity: selectedItems[key],
+            specs: designLibrary[key].res,
+            price: designLibrary[key].price
+          }));
+
+          const hasWowItem = selectedItems['banner'] || selectedItems['wallpaper'];
+          const characterDetails = hasWowItem ? {
+            class: document.getElementById("selected-class")?.value || "",
+            race: document.getElementById("selected-race")?.value || "",
+            gender: document.getElementById("selected-gender")?.value || "Male",
+            tier_season: document.getElementById("wow-gear-set")?.value || "",
+            gear_mode: document.getElementById("selected-gear-mode")?.value || "full",
+            gear_head: form.querySelector("[name='gear_head']")?.value || "",
+            gear_shoulders: form.querySelector("[name='gear_shoulders']")?.value || "",
+            gear_chest: form.querySelector("[name='gear_chest']")?.value || "",
+            gear_hands: form.querySelector("[name='gear_hands']")?.value || "",
+            gear_legs: form.querySelector("[name='gear_legs']")?.value || "",
+            gear_weapon: form.querySelector("[name='gear_weapon']")?.value || "",
+            gear_offhand: form.querySelector("[name='gear_offhand']")?.value || ""
+          } : null;
+
+          const requestData = {
+            email: baseData.email,
+            budget: Number(budgetInput.value) || 0,
+            instructions: baseData.instructions,
+            orderSummary: orderSummary,
+            characterDetails: characterDetails,
+            specificDetails: {},
+            agreements: {
+              terms: !!baseData.agreeTerms,
+              showcase: !!baseData.agreeShowcase,
+              marketing: !!baseData.agreeEmail
+            },
+            paymentDetails: {
+              orderId: details.id,
+              transactionId: details.purchase_units[0].payments.captures[0].id,
+              payerEmail: details.payer.email_address,
+              status: details.status,
+              amount: details.purchase_units[0].amount.value
+            },
+            language: lang,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            status: "pending"
+          };
+
+          try {
+            await db.collection("requests").add(requestData);
+
+            // Webhook Endpoint Configuration
+            const webhookUrl = "YOUR_WEBHOOK_URL_HERE";
+            await triggerWebhook(webhookUrl, requestData);
+
+            formStatus.textContent = translations[lang].formSuccess;
+            formStatus.className = "success";
+
+            form.reset();
+            enableFormInputs();
+            resetWowSelectionUI();
+            
+            selectedItems = {};
+            renderGrid();
+            
+            if (paypalContainer) paypalContainer.style.display = "none";
+            submitBtn.style.display = "block";
+            submitBtn.disabled = false;
+
+          } catch (err) {
+            console.error("Submission error:", err);
+            formStatus.textContent = translations[lang].formError;
+            formStatus.className = "error";
+            enableFormInputs();
+          }
+        });
+      },
+      onError: function(err) {
+        console.error("PayPal Error:", err);
+        const lang = getCurrentLang();
+        formStatus.textContent = lang === 'lv' ? "Maksājums neizdevās. Lūdzu, mēģiniet vēlreiz." : "Payment failed. Please try again.";
+        formStatus.className = "error";
+        enableFormInputs();
+      }
+    }).render("#paypal-button-container");
+  }
+
   form.addEventListener("submit", async e => {
     e.preventDefault();
     const lang = getCurrentLang();
@@ -764,100 +969,18 @@ function renderGrid() {
       }
     }
 
-    submitBtn.disabled = true;
-    submitBtn.innerText = translations[lang].formSubmitting;
-    formStatus.textContent = translations[lang].formSubmitting;
-
-    const formData = new FormData(form);
-    const baseData = Object.fromEntries(formData.entries());
-
-    // 1. Map the selected items into a readable order summary
-    const orderSummary = Object.keys(selectedItems).map(key => ({
-      productKey: key,
-      name: designLibrary[key].name,
-      quantity: selectedItems[key],
-      specs: designLibrary[key].res
-    }));
-
-    // 2. Construct the character details object for WoW customization
-    const characterDetails = hasWowItem ? {
-      class: document.getElementById("selected-class")?.value || "",
-      race: document.getElementById("selected-race")?.value || "",
-      gender: document.getElementById("selected-gender")?.value || "Male",
-      tier_season: document.getElementById("wow-gear-set")?.value || "",
-      gear_mode: document.getElementById("selected-gear-mode")?.value || "full",
-      gear_head: form.querySelector("[name='gear_head']")?.value || "",
-      gear_shoulders: form.querySelector("[name='gear_shoulders']")?.value || "",
-      gear_chest: form.querySelector("[name='gear_chest']")?.value || "",
-      gear_hands: form.querySelector("[name='gear_hands']")?.value || "",
-      gear_legs: form.querySelector("[name='gear_legs']")?.value || "",
-      gear_weapon: form.querySelector("[name='gear_weapon']")?.value || "",
-      gear_offhand: form.querySelector("[name='gear_offhand']")?.value || ""
-    } : null;
-
-    // 3. Construct the final object for Firestore
-    const requestData = {
-      email: baseData.email,
-      budget: baseData.budget,
-      instructions: baseData.instructions,
-      orderSummary: orderSummary,
-      characterDetails: characterDetails, // Custom character selection details
-      specificDetails: {}, // Clear previous details
-      agreements: {
-        terms: !!baseData.agreeTerms,
-        showcase: !!baseData.agreeShowcase,
-        marketing: !!baseData.agreeEmail
-      },
-      language: lang,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      status: "pending"
-    };
-
-    try {
-      await db.collection("requests").add(requestData);
-      
-      formStatus.textContent = translations[lang].formSuccess;
-      formStatus.className = "success";
-      
-      // Reset form and UI
-      form.reset();
-      
-      // Reset custom WoW selection highlights
-      document.querySelectorAll(".wow-class-card").forEach(c => c.classList.remove("active"));
-      document.querySelectorAll(".wow-race-card").forEach(r => r.classList.remove("active"));
-      document.getElementById("selected-class").value = "";
-      document.getElementById("selected-race").value = "";
-      
-      const genderBtns = document.querySelectorAll(".gender-btn");
-      genderBtns.forEach(b => b.classList.remove("active"));
-      if (genderBtns[0]) genderBtns[0].classList.add("active");
-      document.getElementById("selected-gender").value = "Male";
-      
-      const gearModeBtns = document.querySelectorAll(".gear-mode-btn");
-      gearModeBtns.forEach(b => b.classList.remove("active"));
-      if (gearModeBtns[0]) gearModeBtns[0].classList.add("active");
-      document.getElementById("selected-gear-mode").value = "full";
-      
-      const customGearFields = document.getElementById("wow-custom-gear-fields");
-      if (customGearFields) customGearFields.style.display = "none";
-      
-      selectedItems = {};
-      renderGrid();
-      
-      // Re-enable button after cooldown
-      setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerText = translations[lang].formSubmitButton;
-        formStatus.textContent = "";
-      }, 30000);
-
-    } catch (err) {
-      console.error("Submission error:", err);
-      formStatus.textContent = translations[lang].formError;
-      formStatus.className = "error";
-      submitBtn.disabled = false;
-      submitBtn.innerText = translations[lang].formSubmitButton;
+    const termsAgree = document.getElementById("terms-agree");
+    if (termsAgree && !termsAgree.checked) {
+      alert(lang === 'lv' ? "Lūdzu, piekrītiet noteikumiem un nosacījumiem!" : "Please agree to the Terms and Conditions!");
+      return;
     }
+
+    disableFormInputs();
+    submitBtn.style.display = "none";
+    if (paypalContainer) paypalContainer.style.display = "block";
+
+    formStatus.textContent = translations[lang].formPayNotice;
+    formStatus.className = "info";
   });
 
   // --- WoW Selection Click Handlers Binding ---
@@ -912,6 +1035,10 @@ function renderGrid() {
         }
       }
     });
+  });
+
+  document.addEventListener('langChanged', () => {
+    renderGrid();
   });
 
   renderGrid();

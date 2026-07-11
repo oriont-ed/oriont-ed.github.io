@@ -1103,3 +1103,17 @@ hr {
   }
 }
 
+#paypal-button-container {
+  max-width: 100%;
+  margin-top: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border: 1px dashed #c69b3d;
+  border-radius: 4px;
+}
+
+.form-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
