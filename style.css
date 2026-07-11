@@ -1113,7 +1113,19 @@ hr {
 }
 
 .form-disabled {
-  opacity: 0.6;
+  opacity: 0.8;
+}
+
+.form-disabled input,
+.form-disabled textarea,
+.form-disabled select,
+.form-disabled button:not(.paypal-button),
+.form-disabled .product-card,
+.form-disabled .wow-class-card,
+.form-disabled .wow-race-card,
+.form-disabled .gender-btn,
+.form-disabled .gear-mode-btn {
   pointer-events: none;
+  user-select: none;
 }
 

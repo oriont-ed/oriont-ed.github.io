@@ -654,6 +654,8 @@ function setupRequestForm(db, translations, getCurrentLang) {
   const resOutput = document.getElementById("res-output");
 
   let selectedItems = {}; 
+  let isPaymentPending = false;
+  let paypalButtonsRendered = false;
 
   const designLibrary = {
     banner: { name: "WoW Banner", res: "2560 x 1440 px", dimensions: "216.75 x 121.92 mm", customizable: true, maxQty: 1, price: 5.00 },
@@ -761,17 +763,21 @@ function renderGrid() {
 
   // Helper functions to disable/enable inputs
   function disableFormInputs() {
-    form.querySelectorAll("input, textarea, select, button:not(.paypal-button)").forEach(el => {
-      if (el.id !== "submit-btn") {
-        el.disabled = true;
+    isPaymentPending = true;
+    form.querySelectorAll("input, textarea").forEach(el => {
+      if (el.id !== "budget") {
+        el.readOnly = true;
       }
     });
     form.classList.add("form-disabled");
   }
 
   function enableFormInputs() {
-    form.querySelectorAll("input, textarea, select, button").forEach(el => {
-      el.disabled = false;
+    isPaymentPending = false;
+    form.querySelectorAll("input, textarea").forEach(el => {
+      if (el.id !== "budget") {
+        el.readOnly = false;
+      }
     });
     form.classList.remove("form-disabled");
   }
@@ -831,9 +837,14 @@ function renderGrid() {
     }
   }
 
-  // PayPal Buttons Integration
+  // PayPal Buttons Integration (Render on validation to avoid iframe size issues)
   const paypalContainer = document.getElementById("paypal-button-container");
-  if (window.paypal) {
+  function renderPaypalButtons() {
+    if (paypalButtonsRendered) return;
+    if (!window.paypal) {
+      console.error("PayPal JS SDK not loaded yet.");
+      return;
+    }
     window.paypal.Buttons({
       createOrder: function(data, actions) {
         let total = 0;
@@ -944,6 +955,8 @@ function renderGrid() {
         enableFormInputs();
       }
     }).render("#paypal-button-container");
+
+    paypalButtonsRendered = true;
   }
 
   form.addEventListener("submit", async e => {
@@ -981,6 +994,8 @@ function renderGrid() {
 
     formStatus.textContent = translations[lang].formPayNotice;
     formStatus.className = "info";
+
+    renderPaypalButtons();
   });
 
   // --- WoW Selection Click Handlers Binding ---
@@ -988,6 +1003,7 @@ function renderGrid() {
   const classInput = document.getElementById("selected-class");
   classCards.forEach(card => {
     card.addEventListener("click", () => {
+      if (isPaymentPending) return;
       classCards.forEach(c => c.classList.remove("active"));
       card.classList.add("active");
       const selectedClass = card.getAttribute("data-class");
@@ -999,6 +1015,7 @@ function renderGrid() {
   const raceInput = document.getElementById("selected-race");
   raceCards.forEach(card => {
     card.addEventListener("click", () => {
+      if (isPaymentPending) return;
       raceCards.forEach(r => r.classList.remove("active"));
       card.classList.add("active");
       const selectedRace = card.getAttribute("data-race");
@@ -1010,6 +1027,7 @@ function renderGrid() {
   const genderInput = document.getElementById("selected-gender");
   genderBtns.forEach(btn => {
     btn.addEventListener("click", () => {
+      if (isPaymentPending) return;
       genderBtns.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       const selectedGender = btn.getAttribute("data-gender");
@@ -1022,6 +1040,7 @@ function renderGrid() {
   const customGearFields = document.getElementById("wow-custom-gear-fields");
   gearModeBtns.forEach(btn => {
     btn.addEventListener("click", () => {
+      if (isPaymentPending) return;
       gearModeBtns.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       const mode = btn.getAttribute("data-mode");
