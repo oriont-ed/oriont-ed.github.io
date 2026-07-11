@@ -1,202 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Osmosis BHOP - 3D Browser Bunny Hopping</title>
-    
-    <!-- Premium Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Custom Style Sheet -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <link rel="icon" href="w.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WDESIGN</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
-    <!-- 3D WebGL Canvas Holder -->
-    <div id="canvas-container"></div>
 
-    <!-- UI Overlay Wrapper -->
-    <div id="ui-wrapper">
-        
-        <!-- 1. HUD Panel -->
-        <div id="hud-panel" class="hud-container hidden">
-            <div class="hud-item speed-card">
-                <span class="label">SPEED</span>
-                <span id="speed-val" class="value font-mono">0.0 u/s</span>
-                <span id="max-speed-val" class="sub-value font-mono">Max: 0.0</span>
-            </div>
-            
-            <div class="hud-item timer-card">
-                <span class="label">TIME</span>
-                <span id="timer-val" class="value font-mono">00:00.00</span>
-            </div>
-            
-            <div class="hud-item lap-card">
-                <span class="label">LAPS</span>
-                <span id="lap-val" class="value font-mono">0</span>
-                <span id="best-lap-val" class="sub-value font-mono">Best: 0</span>
-            </div>
-            
-            <div class="hud-center-text">
-                <div id="feedback-text" class="glow-text">GO!</div>
-                <div id="streak-badge" class="streak-pill hidden">STREAK: <span id="streak-val">0</span></div>
-            </div>
-        </div>
-
-        <!-- 0. Login Panel -->
-        <div id="login-panel" class="overlay-panel">
-            <div class="menu-card glass-panel">
-                <div class="brand-logo">
-                    <div class="outer-ring">
-                        <div class="inner-dot"></div>
-                    </div>
-                    <h1>OSMOSIS BHOP</h1>
-                    <p class="subtitle">CELLULAR BILAYER BUNNY HOPPING</p>
-                </div>
-                
-                <div class="auth-section">
-                    <p class="auth-prompt">Please sign in to access the game</p>
-                    <button id="google-login-btn" class="btn btn-primary btn-glow">
-                        <span class="google-icon-wrapper">
-                            <svg class="google-icon" viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
-                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
-                            </svg>
-                        </span>
-                        SIGN IN WITH GOOGLE
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 2. Main Menu Panel -->
-        <div id="main-menu-panel" class="overlay-panel hidden">
-            <div class="menu-card glass-panel">
-                <div class="brand-logo">
-                    <div class="outer-ring">
-                        <div class="inner-dot"></div>
-                    </div>
-                    <h1>OSMOSIS BHOP</h1>
-                    <p class="subtitle">CELLULAR BILAYER BUNNY HOPPING</p>
-                </div>
-                
-                <div class="button-group">
-                    <button id="play-btn" class="btn btn-primary btn-glow">PLAY</button>
-                    <button id="settings-btn" class="btn btn-secondary">SETTINGS</button>
-                </div>
-
-                <!-- User Profile Badge -->
-                <div id="user-profile" class="user-profile-badge hidden">
-                    <img id="user-avatar" src="" alt="Avatar">
-                    <div class="user-info">
-                        <span id="user-name" class="font-mono">User Name</span>
-                        <button id="logout-btn" class="logout-link">Sign Out</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. Settings Panel -->
-        <div id="settings-panel" class="overlay-panel hidden">
-            <div class="menu-card glass-panel">
-                <h2>SETTINGS</h2>
-                
-                <div class="settings-group">
-                    <div class="slider-row">
-                        <label for="sensitivity-slider">MOUSE SENSITIVITY</label>
-                        <div class="slider-val-box">
-                            <input type="range" id="sensitivity-slider" min="0.1" max="3.0" step="0.05" value="1.0">
-                            <span id="sensitivity-val" class="slider-label font-mono">1.00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button id="reset-records-btn" class="btn btn-danger">RESET RECORDS</button>
-                    <button id="settings-back-btn" class="btn btn-primary">BACK</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. Pause Panel -->
-        <div id="pause-panel" class="overlay-panel hidden">
-            <div class="menu-card glass-panel">
-                <h2>PAUSED</h2>
-
-                <div class="settings-group">
-                    <div class="slider-row">
-                        <label for="pause-sensitivity-slider">MOUSE SENSITIVITY</label>
-                        <div class="slider-val-box">
-                            <input type="range" id="pause-sensitivity-slider" min="0.1" max="3.0" step="0.05" value="1.0">
-                            <span id="pause-sensitivity-val" class="slider-label font-mono">1.00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button id="resume-btn" class="btn btn-primary btn-glow">RESUME</button>
-                    <button id="pause-menu-btn" class="btn btn-secondary">MAIN MENU</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. Run Stats Panel (Game Over) -->
-        <div id="stats-screen-panel" class="overlay-panel hidden">
-            <div class="menu-card glass-panel stats-card">
-                <div class="stats-logo">
-                    <div class="outer-ring small-ring">
-                        <div class="inner-dot small-dot"></div>
-                    </div>
-                    <h2 id="stats-title">RUN OVER!</h2>
-                </div>
-
-                <table class="stats-table">
-                    <tr>
-                        <td>TIME ELAPSED</td>
-                        <td id="stats-time" class="font-mono text-highlight">00:00.00</td>
-                    </tr>
-                    <tr>
-                        <td>LAPS COMPLETED</td>
-                        <td id="stats-laps" class="font-mono text-highlight">0</td>
-                    </tr>
-                    <tr>
-                        <td>BEST LAPS RECORD</td>
-                        <td id="stats-best" class="font-mono text-muted">0</td>
-                    </tr>
-                    <tr>
-                        <td>PERFECT HOPS STREAK</td>
-                        <td id="stats-streak" class="font-mono text-highlight">0</td>
-                    </tr>
-                </table>
-
-                <div class="button-group">
-                    <button id="retry-btn" class="btn btn-primary btn-glow">RETRY</button>
-                    <button id="stats-menu-btn" class="btn btn-secondary">MAIN MENU</button>
-                </div>
-            </div>
-        </div>
-
+  <nav>
+    <div id="logo">W</div>
+    <div id="slogan">WDESIGN</div>
+    
+    <div id="lang-switcher">
+      <button data-lang="en" class="lang-btn active">EN</button>
+      <button data-lang="lv" class="lang-btn">LV</button>
     </div>
 
-    <!-- Three.js WebGL Library CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <a href="#" data-target="home" class="active" data-key="navHome">Home</a>
+    <a href="#" data-target="Request" data-key="navRequest">Service</a>
+    <a href="#" data-target="Portfolio" data-key="navPortfolio">Portfolio</a>
+    <a href="#" data-target="GFX" data-key="navGFX">GFX</a>
+  </nav>
 
-    <!-- Firebase App & Auth SDK CDNs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <div id="head">
+    <span data-key="headerTitle">/// Whazorz Designs</span>
+    <div class="header-social-links">
+      <a href="mailto:whazorz.design@gmail.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a>
+      <a href="https://twitch.tv/whazorz" title="Twitch" target="_blank"><i class="fab fa-twitch"></i></a>
+      <a href="https://www.youtube.com/@whazorz" title="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="https://www.facebook.com/Whazorz/" title="Facebook" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.paypal.com/donate?business=whazorz.design@gmail.com&item_name=Donation+to+Whazorz+Designs&currency_code=EUR" title="Donate" target="_blank"><i class="fab fa-paypal"></i></a>
+    </div>
+  </div>
 
-    <!-- Authentication Coordinator -->
-    <script src="js/auth.js"></script>
+  <div class="content-container">
+    
+    <section id="home" class="content active">
+      <div class="home-content-wrapper">
+        <div class="content-padding">
+          <h2 data-key="homeAboutTitle">About</h2>
+          <p data-key="homeAboutText">Hi, I’m Whazorz — an artist deeply inspired by creativity in all its forms. My journey began in 2012, when I started my career in technical fields and gradually moved toward graphic design. Over the years, I’ve shared my creative process and ideas through live streams, inviting others to explore the world of graphics and design with me.</p>
+        </div>
+        <hr>
 
-    <!-- Game Scripts -->
-    <script src="js/audio.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/level.js"></script>
-    <script src="js/renderer.js"></script>
-    <script src="js/game.js"></script>
+        <div class="content-padding">
+          <h3 data-key="homeLatestWorkTitle">Latest Work</h3>
+          <div class="gallery-container" id="latest-work-gallery"></div>
+          <a href="#" data-target="Portfolio" class="view-all-portfolio" data-key="homeViewAll">View Full Portfolio &rarr;</a>
+        </div>
+
+        <hr>
+
+        <div class="content-padding">
+          <h3 data-key="homeRequestInfoTitle">REQUESTING INFO.</h3>
+          <div class="info-boxes">
+            <div class="box">
+              <h3 data-key="homeTermsTitle">Key Terms</h3>
+              <p data-key="homeTermsApproval"><strong>Approval:</strong> All requests are subject to review. Projects begin only after designer approval.</p>
+              <p data-key="homeTermsTimeframe"><strong>Timeframe:</strong> Standard delivery is 2-3 business days, but complex projects may take longer.</p>
+              <p data-key="homeTermsRevisions"><strong>Revisions:</strong> Up to two revisions are included. Additional revisions may incur extra charges.</p>
+              <p data-key="homeTermsPayment"><strong>Payment:</strong> Payment is processed *after* you approve the design. Prices shown are estimates and can vary.</p>
+              <p data-key="homeTermsComm"><strong>Communication:</strong> All project communication will be via email.</p>
+              <hr>
+              <p data-key="homeTermsContact">Contacts: whazorz.design@gmail.com</p>
+
+
+            </div>
+            
+            <div class="box">
+              <table class="price-table">
+                <thead>
+                  <tr>
+                    <th data-key="priceHeaderProduct">Available Products</th>
+                    <th data-key="priceHeaderRes">Technical Resolution (In MM)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td data-key="priceLogo">Logo Graphical</td><td data-key="notpredefined">No predefined size</td></tr>
+                  <tr><td data-key="priceA3">A3 Poster Graphical</td><td>(297 x 420 mm)</td></tr>
+                  <tr><td data-key="priceA4">A4 Poster Graphical</td><td>(210 x 297 mm)</td></tr>
+                  <tr><td data-key="priceCover">Cover Graphical</td><td>(120 x 120 mm)</td></tr>
+                  <tr><td data-key="priceFlyer">Flyer Graphical</td><td>(148 x 210 mm))</td></tr>
+                  <tr><td data-key="priceBrandCard">Brand Card Graphical</td><td>(85 x 55 mm)</td></tr>
+                  <tr><td data-key="priceBanner">Banner / Header Graphical</td><td>(216.75 x 121.92 mm) </td></tr>
+                  <tr><td data-key="priceProfile">Profile Graphical</td><td>(67.73 x 67.73 mm)</td></tr>
+                </tbody>
+              </table>
+
+          </div>
+          
+        </div>
+
+        <div class="content-padding">
+          <div class="donation-box">
+            <h3 data-key="homeDonateTitle">Support My Work</h3>
+            <p data-key="homeDonateText">“Buy me a coffee ☕🎨”</p>
+            <form action="https://www.paypal.com/donate" method="post" target="_blank">
+              <input type="hidden" name="business" value="whazorz.design@gmail.com">
+              <input type="hidden" name="item_name" value="Donation to Whazorz Designs">
+              <input type="hidden" name="currency_code" value="EUR">
+              <button type="submit" class="donate-btn" data-key="homeDonateButton">Donate with PayPal</button>
+            </form>
+          </div>
+        </div>
+
+        <hr>
+      </div>
+    </section>
+
+    <section id="Portfolio" class="content">
+      <div class="home-content-wrapper">
+        <div class="content-padding">
+          <h2 data-key="portfolioTitle">Portfolio</h2>
+
+          <div class="filter-controls">
+            <button class="filter-btn active" data-filter="all" data-key="filterAll">All</button>
+            <button class="filter-btn" data-filter="logo" data-key="filterLogos">Logos</button>
+            <button class="filter-btn" data-filter="cover" data-key="filterCover">Kovers</button>
+            <button class="filter-btn" data-filter="posters" data-key="filterPosters">Posters</button>
+            <button class="filter-btn" data-filter="banner" data-key="filterBanners">Banners</button>
+            <button class="filter-btn" data-filter="profile" data-key="filterProfile">Profiles</button>
+            <button class="filter-btn" data-filter="brandcard" data-key="filterBrandCard">Brand Cards</button>
+            <button class="filter-btn" data-filter="flyer" data-key="filterFlyer">Flajers</button>
+          </div>
+
+          <div class="gallery-container" id="portfolio-gallery"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="GFX" class="content">
+      <div class="home-content-wrapper">
+        <div class="content-padding">
+          <h2 data-key="gfxTitle">GFX</h2>
+          <div class="filter-controls" id="gfx-filter-controls">
+            <button class="filter-btn active" data-filter="all" data-key="filterAll">All</button>
+            <button class="filter-btn" data-filter="environment" data-key="filterEnvironment">ENVIRONMENT</button>
+            <button class="filter-btn" data-filter="natural" data-key="filterNatural">NATURAL EFFECTS</button>
+            <button class="filter-btn" data-filter="particle" data-key="filterParticle">PARTICLE STYLES</button>
+            <button class="filter-btn" data-filter="tech" data-key="filterTech">TECH GLITCH DIGITAL EFFECTS</button>
+            <button class="filter-btn" data-filter="space" data-key="filterSpace">SPACE COSMIC EFFECTS</button>
+            <button class="filter-btn" data-filter="abstract" data-key="filterAbstract">CLEAN ABSTRACT TEXTURES</button>
+            <button class="filter-btn" data-filter="impact" data-key="filterImpact">IMPACT DAMAGE EFFECTS</button>
+            <button class="filter-btn" data-filter="energy" data-key="filterEnergy">ENERGY MAGIC SCI-FI EFFECTS</button>
+            <button class="filter-btn" data-filter="smoke" data-key="filterSmoke">SMOKE FOG ATMOSPHERE</button>
+            <button class="filter-btn" data-filter="fire" data-key="filterFire">FIRE HEAT EFFECTS</button>
+          </div>
+          <div id="gfx-container" data-key="gfxIntro"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="Request" class="content">
+      <div class="home-content-wrapper">
+        <div class="content-padding">
+          <h2 data-key="requestTitle">Request a Design</h2>
+
+          <details class="terms-and-conditions">
+            <summary data-key="requestTermsSummary">Please read the full Commission Terms & Conditions before proceeding.</summary>
+            
+            <div class="terms-content">
+              <h3 data-key="requestTermsTitle">Commission Terms & Conditions</h3>
+              
+              <h4 data-key="requestTermsApprovalTitle">Approval</h4>
+              <ul>
+                <li data-key="requestTermsApproval1">All design requests are subject to review and approval by the designer.</li>
+                <li data-key="requestTermsApproval2">Projects will only proceed if they meet the designer’s creative and technical requirements.</li>
+                <li data-key="requestTermsApproval3">The designer reserves the right to decline any request that does not align with the project criteria or ethical guidelines.</li>
+              </ul>
+
+              <h4 data-key="requestTermsPaymentTitle">Payment</h4>
+              <ul>
+                <li data-key="requestTermsPayment1">Payment will be processed only after the client has reviewed and approved the proposed design.</li>
+                <li data-key="requestTermsPayment2">Please note that final pricing may vary depending on the project’s complexity and may exceed the initial estimate.</li>
+                <li data-key="requestTermsPayment3">Clients will be notified and must approve any cost adjustments before further work continues.</li>
+              </ul>
+
+              <h4 data-key="requestTermsTimeframeTitle">Timeframe</h4>
+              <ul>
+                <li data-key="requestTermsTimeframe1">The standard delivery timeframe is 2–3 business days.</li>
+                <li data-key="requestTermsTimeframe2">However, more complex or customized projects may require additional time.</li>
+                <li data-key="requestTermsTimeframe3">Clients will be informed of any expected delays in advance.</li>
+              </ul>
+
+              <h4 data-key="requestTermsRevisionsTitle">Revisions</h4>
+              <ul>
+                <li data-key="requestTermsRevisions1">Each project includes up to two (2) revisions, depending on the scope and complexity.</li>
+                <li data-key="requestTermsRevisions2">Additional revisions may incur extra charges, which will be discussed prior to implementation.</li>
+              </ul>
+
+              <h4 data-key="requestTermsCommTitle">Communication</h4>
+              <ul>
+                <li data-key="requestTermsComm1">All communication and project updates will be conducted via email to ensure clear and traceable correspondence.</li>
+                <li data-key="requestTermsComm2">Clients are encouraged to respond promptly to maintain project timelines.</li>
+              </ul>
+
+              <h4 data-key="requestTermsEuTitle">European Consumer Compliance</h4>
+              <ul>
+                <li data-key="requestTermsEu1">All transactions comply with EU consumer protection laws, including transparency in pricing, digital service delivery, and refund eligibility.</li>
+                <li data-key="requestTermsEu2">Once a design is approved and production has begun, refunds may not be available due to the custom nature of the service.</li>
+              </ul>
+            </div>
+          </details>
+          <p data-key="requestFormIntro">Please fill out the form below to start your request. <strong>All future communication will be conducted via email.</strong></p>
+          
+          <form id="request-form">
+            <div class="form-group">
+             <label for="email" data-key="formEmail">Your Email Address</label>
+            <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+          </div>
+
+          <div class="form-group">
+              <div id="product-selection-grid" class="product-grid"></div>
+              <div class="tech-res-display" class="tech-info" data-key="FormalSelectProductAbove">Choose Product Above.</div>
+                <input type="hidden" id="final-selection-data" name="final_selection">
+
+              </select>
+              <small class="smart-guide" data-key="FormalSmartGuide">* Smart Guide: Sizes are Width x Height & mm</small>
+            </div>
+            
+            <div id="tech-res-display" class="tech-box">
+              <span class="label" data-key="FormalResolution">Formal Resolution:</span>
+              <span data-key="FormalSelectProduct" id="res-output">Select a product</span>
+            </div>
+
+            <div class="form-group conditional-details" id="custom-size-details">
+              <label>Custom Dimensions (Width x Height)</label>
+              <div class="side-by-side">
+                <input type="number" name="custom_w" placeholder="Width (px)">
+                <input type="number" name="custom_h" placeholder="Height (px)">
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="budget" data-key="formBudget">Total Estimated Cost (EUR)</label>
+              <input type="number" id="budget" name="budget" placeholder="0" min="0">
+            </div>
+
+            <div class="form-group conditional-details" id="logo-details">
+              <label data-key="formLogoDetails">Logo Details</label>
+              <input type="text" name="logo_brand_name" placeholder="Brand Name" data-key-placeholder="formLogoPlaceholder1">
+              <textarea name="logo_style" placeholder="Describe the style (e.g., modern, minimalist, retro) and any color preferences?" data-key-placeholder="formLogoPlaceholder2"></textarea>
+            </div>
+            
+            <div class="form-group conditional-details" id="brandcard-details">
+              <label data-key="formBrand-CardDetails">Brand Card Details</label>
+              <input type="text" name="Brand-Card_name" placeholder="Brand Name" data-key-placeholder="formBrandcardPlaceholder1">
+              <input type="text" name="Brand-Card_name" placeholder="Phone Number" data-key-placeholder="formBrandcardPlaceholder2">
+              <input type="text" name="Brand-Card_name" placeholder="E-mail" data-key-placeholder="formBrandcardPlaceholder3">
+              <input type="text" name="Brand-Card_name" placeholder="Extra" data-key-placeholder="formBrandcardPlaceholder4">
+              <textarea name="Brand-Card_style" placeholder="Describe the style (e.g., modern, minimalist, retro) and any color preferences?" data-key-placeholder="formBrandCardPlaceholder5"></textarea>
+            </div>
+            
+            
+            <div class="form-group conditional-details" id="poster-details">
+              <label data-key="formPosterDetails">A3 Poster</label>
+              <textarea name="poster_info" placeholder="What text, dates, and information must be on the poster?" data-key-placeholder="formPosterPlaceholder"></textarea>
+              <textarea name="poster_info" placeholder="Describe any style (e.g., modern, minimalist, retro) or any color preferences?" data-key-placeholder="formPosterPlaceholder2"></textarea>
+            </div>
+
+
+            <div class="form-group conditional-details" id="poster-details2">
+              <label data-key="formPosterDetails2">A4 Poster</label>
+              <textarea name="poster_info" placeholder="What text, dates, and information must be on the poster?" data-key-placeholder="formPosterPlaceholder"></textarea>
+              <textarea name="poster_info" placeholder="Describe any style (e.g., modern, minimalist, retro) or any color preferences?" data-key-placeholder="formPosterPlaceholder2"></textarea>
+            </div>
+
+            <div class="form-group conditional-details" id="banner-details">
+              <label data-key="formBannerDetails">Banner</label>
+              <input type="text" name="banner_platform" placeholder="Platform (e.g., YouTube, Twitter, Website)" data-key-placeholder="formBannerPlaceholder1">
+              <input type="text" name="banner_platform" placeholder="What text or @usernames should be on the banner?" data-key-placeholder="formBannerPlaceholder2">
+              <textarea name="banner_text" placeholder="Describe any style (e.g., modern, minimalist, retro) or any color preferences?" data-key-placeholder="formBannerPlaceholder3"></textarea>
+            </div>
+
+            <div class="form-group conditional-details visible" id="profile-details">
+              <label data-key="formProfileDetails">Profile Details</label>
+              <input type="text" name="profile_username" placeholder="Username or Text for profile pic" data-key-placeholder="formProfilePlaceholder1">
+              <input type="file" id="file" name="file" accept="image/png, image/jpeg" />
+            </div>
+
+            <div class="form-group conditional-details visible" id="Flyer-details">
+              <label data-key="formFlyerDetails">Flyer-details</label>
+              <input type="text" name="Flyer_username" placeholder="What text, dates, and information must be on the flyer?" data-key-placeholder="formFlyerPlaceholder1">
+              <textarea name="Flyer_style" placeholder="Color scheme, style, or any specific ideas." data-key-placeholder="formFlyerPlaceholder2"></textarea>
+            </div>
+
+            <div class="form-group conditional-details visible" id="cover-details">
+              <label data-key="formCoverDetails">Cover-details</label>
+              <input type="text" name="Cover_username" placeholder="What informational text must be on cover?" data-key-placeholder="formCoverPlaceholder1">
+              <textarea name="Cover_style" placeholder="Color scheme, style, or any specific ideas?" data-key-placeholder="formCoverPlaceholder2"></textarea>
+            </div>
+
+
+            <div class="form-group">
+              <label for="instructions" data-key="formInstructions">General Instructions / Project Brief</label>
+              <textarea id="instructions" name="instructions" rows="5" placeholder="Please provide a clear and detailed brief of your requirements. Include links to any inspiration or references." data-key-placeholder="formInstructionsPlaceholder"></textarea>
+            </div>
+
+             <div class="form-group-inline">
+            <label>
+              <input type="checkbox" id="terms-agree">
+              <span data-key="formAgreeTerms">I agree to the Terms and Conditions</span>
+              </label>
+              </div>  
+            
+            <div class="form-group-inline">
+              <input type="checkbox" id="showcase" name="showcase" value="true">
+              <label for="showcase" data-key="formAgreeShowcase">I agree to allow WhazorzDesigns to showcase the final work in their portfolio.</label>
+            </div>
+
+                  <div class="form-group-inline">
+            <label>
+              <input type="checkbox" id="email-agree" name="email_agree" value="true">
+              <span data-key="formAgreeEmail">I agree to recieve future emails.</span>
+              </label>
+              </div>  
+
+            <button type="submit" id="submit-btn" data-key="formSubmitButton">Submit Request</button>
+            <div id="form-status"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer data-key="footerCopyright">Copyright © WHAZORZ 2025-2026</footer>
+
+  <div id="lightbox-overlay" class="lightbox-overlay">
+    <span id="lightbox-close" class="lightbox-close">&times;</span>
+    <img id="lightbox-image" class="lightbox-image" src="" alt="Enlarged portfolio item">
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
